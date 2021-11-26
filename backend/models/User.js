@@ -1,7 +1,7 @@
+/* eslint-disable no-useless-escape */
 const mongoose = require("mongoose");
-const roleModel = require("./Role");
+const bcrypt = require("bcryptjs");
 const uniqueValidator = require("mongoose-unique-validator");
-const { ObjectUnsubscribedError } = require("rxjs");
 
 const userSchema = new mongoose.Schema({
   fullName: {
@@ -30,5 +30,14 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.plugin(uniqueValidator);
+
+userSchema.statics.setPassword = async function (password) {
+  const salt = await bcrypt.genSalt(10);
+  return await bcrypt.hash(password, salt);
+};
+
+userSchema.methods.validPassword = async function (password) {
+  return await bcrypt.compare(password, this.hashPassword);
+};
 
 module.exports = mongoose.model("User", userSchema);
