@@ -1,6 +1,7 @@
 /* eslint-disable no-useless-escape */
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const uniqueValidator = require("mongoose-unique-validator");
 
 const userSchema = new mongoose.Schema({
@@ -38,6 +39,18 @@ userSchema.statics.setPassword = async function (password) {
 
 userSchema.methods.validPassword = async function (password) {
   return await bcrypt.compare(password, this.hashPassword);
+};
+
+userSchema.methods.generateJwt = function () {
+  return jwt.sign(
+    {
+      _id: this._id,
+      email: this.email,
+      fullName: this.fullName,
+      roles: this.roles.map((p) => p.name),
+    },
+    process.env.JWT_SECRET
+  );
 };
 
 module.exports = mongoose.model("User", userSchema);

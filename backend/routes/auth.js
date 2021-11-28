@@ -12,6 +12,7 @@ router.get("/", (req, res) => {
   res.send("Hello from auth route!");
 });
 
+// Register
 router.post("/register", async (req, res) => {
   const validation = registerValidation(req.body);
   if (validation.error) {
@@ -43,23 +44,25 @@ router.post("/register", async (req, res) => {
   }
 });
 
+// Login
 router.post("/login", async (req, res) => {
   const validation = loginValidation(req.body);
   if (validation.error) {
     return res.status(400).json(validation.error);
   }
 
-  const user = await User.findOne({ email: req.body.email });
+  const user = await User.findOne({ email: req.body.email }).populate("roles");
 
   if (!user) {
     return res.status(400).json({ message: "Email or password is wrong!" });
   }
-
   if (!(await user.validPassword(req.body.password))) {
     return res.status(400).json({ message: "Email or password is wrong!" });
   }
 
-  return res.json({ message: "Login succeeded!" });
+  const token = user.generateJwt();
+
+  return res.json(token);
 });
 
 module.exports = router;

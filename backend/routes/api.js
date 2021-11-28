@@ -1,4 +1,5 @@
 const express = require("express");
+const authorize = require("../middlewares/authorization");
 
 // routes
 const authRouter = require("./auth");
@@ -7,7 +8,7 @@ const roleRouter = require("./role");
 
 const app = express();
 
-app.get("/", (req, res) => {
+app.get("/", authorize(["Admin"]), (req, res) => {
   res.send("Hello from api!");
 });
 
