@@ -5,6 +5,7 @@ const authorize = require("../middlewares/authorization");
 const authRouter = require("./auth");
 const userRouter = require("./user");
 const roleRouter = require("./role");
+const projectRouter = require("./project");
 
 const app = express();
 
@@ -16,5 +17,6 @@ app.get("/", authorize(["Admin"]), (req, res) => {
 app.use("/auth", authRouter);
 app.use("/user", userRouter);
 app.use("/role", roleRouter);
+app.use("/project", authorize(), projectRouter);
 
 module.exports = app;

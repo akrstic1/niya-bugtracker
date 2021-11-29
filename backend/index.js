@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const morgan = require("morgan");
-const errorHandler = require("./helpers/errorHandler");
+const errorHandler = require("./middlewares/errorHandler");
 require("dotenv").config();
 
 //Import routes
