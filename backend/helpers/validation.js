@@ -51,6 +51,17 @@ const createTicketValidation = (data) => {
   return schema.validate(data);
 };
 
+const updateTicketValidation = (data) => {
+  const schema = joi.object({
+    title: joi.string(),
+    description: joi.string(),
+    status: joi.string(),
+    priority: joi.string(),
+  });
+
+  return schema.validate(data);
+};
+
 const commentValidation = (data) => {
   const schema = joi.object({
     message: joi.string().required(),
@@ -63,6 +74,7 @@ module.exports = {
   registerValidation,
   loginValidation,
   createTicketValidation,
+  updateTicketValidation,
   updateProjectValidation,
   createProjectValidation,
   commentValidation,
