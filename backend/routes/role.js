@@ -1,23 +1,10 @@
 const express = require("express");
-const Role = require("../models/Role");
+const roleController = require("../controllers/roleController");
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.send("Hello from role route!");
-});
+router.get("/", roleController.getAllRoles);
 
-router.post("/", async (req, res) => {
-  const newRole = new Role({
-    name: req.body.name,
-    description: req.body.description,
-  });
-  try {
-    const savedRole = await newRole.save();
-    res.send(savedRole);
-  } catch (error) {
-    res.status(400).send(error);
-  }
-});
+router.post("/", roleController.createRole);
 
 module.exports = router;
