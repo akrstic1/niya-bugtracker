@@ -20,7 +20,7 @@ const loginValidation = (data) => {
   return schema.validate(data);
 };
 
-const projectValidation = (data) => {
+const createProjectValidation = (data) => {
   const schema = joi.object({
     name: joi.string().required(),
     description: joi.string().required(),
@@ -30,7 +30,17 @@ const projectValidation = (data) => {
   return schema.validate(data);
 };
 
-const ticketValidation = (data) => {
+const updateProjectValidation = (data) => {
+  const schema = joi.object({
+    name: joi.string(),
+    description: joi.string(),
+    users: joi.array().items(joi.string().regex(/^[0-9a-fA-F]{24}$/)),
+  });
+
+  return schema.validate(data);
+};
+
+const createTicketValidation = (data) => {
   const schema = joi.object({
     title: joi.string().required(),
     description: joi.string().required(),
@@ -52,7 +62,8 @@ const commentValidation = (data) => {
 module.exports = {
   registerValidation,
   loginValidation,
-  ticketValidation,
-  projectValidation,
+  createTicketValidation,
+  updateProjectValidation,
+  createProjectValidation,
   commentValidation,
 };

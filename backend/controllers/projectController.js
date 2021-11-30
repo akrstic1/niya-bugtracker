@@ -1,9 +1,11 @@
 const Project = require("../models/Project");
 const {
-  projectValidation,
-  ticketValidation,
+  createProjectValidation,
+  updateProjectValidation,
+  createTicketValidation,
   commentValidation,
 } = require("../helpers/validation");
+const ObjectId = require("mongoose").Types.ObjectId;
 
 const getAllProjects = async (req, res) => {
   try {
@@ -18,8 +20,29 @@ const getAllProjects = async (req, res) => {
   }
 };
 
+const getByIdProject = async (req, res) => {
+  if (!ObjectId.isValid(req.params.project_id)) {
+    return res.status(400).json({ message: "Bad object ID" });
+  }
+
+  try {
+    const projectById = await Project.findById(req.params.project_id).populate({
+      path: "users",
+      select: "-hashPassword",
+      populate: { path: "roles" },
+    });
+
+    if (projectById == null) {
+      return res.status(404).json({ message: "Project not found." });
+    }
+
+    return res.json(projectById);
+  } catch (error) {
+    return res.status(404).send(error);
+  }
+};
 const createProject = async (req, res) => {
-  const validation = projectValidation(req.body);
+  const validation = createProjectValidation(req.body);
   if (validation.error) {
     return res.status(400).json(validation.error);
   }
@@ -38,8 +61,43 @@ const createProject = async (req, res) => {
   }
 };
 
+const updateProject = async (req, res) => {
+  const validation = updateProjectValidation(req.body);
+  if (validation.error) {
+    return res.status(400).json(validation.error);
+  }
+
+  const updatedProject = await Project.findByIdAndUpdate(
+    req.params.project_id,
+    req.body,
+    { new: true }
+  );
+  if (!updatedProject) {
+    return res.status(404).json({ message: "Project not found!" });
+  }
+  return res.json(updatedProject);
+};
+
+const deleteProject = async (req, res) => {
+  if (!ObjectId.isValid(req.params.project_id)) {
+    return res.status(400).json({ message: "Bad object ID" });
+  }
+
+  try {
+    const deletedProject = await Project.findByIdAndDelete(
+      req.params.project_id
+    );
+    if (deletedProject == null) {
+      return res.status(404).json({ messsage: "Project not found." });
+    }
+    return res.status(204).json(null);
+  } catch (error) {
+    return res.status(404).json(error);
+  }
+};
+
 const createTicket = async (req, res) => {
-  const validation = ticketValidation(req.body);
+  const validation = createTicketValidation(req.body);
   if (validation.error) {
     return res.status(400).json(validation.error);
   }
@@ -106,7 +164,10 @@ const createComment = async (req, res) => {
 
 module.exports = {
   getAllProjects,
+  getByIdProject,
   createProject,
+  updateProject,
+  deleteProject,
   createTicket,
   createComment,
 };
