@@ -15,6 +15,22 @@ const commentSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+const assignSchema = new mongoose.Schema({
+  assignedDate: {
+    type: Date,
+    default: Date.now,
+  },
+  assignedToUser_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  assignedByUser_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+});
+
 const ticketSchema = new mongoose.Schema(
   {
     title: {
@@ -39,6 +55,7 @@ const ticketSchema = new mongoose.Schema(
       required: true,
     },
     comments: [commentSchema],
+    assigns: [assignSchema],
   },
   { timestamps: true }
 );

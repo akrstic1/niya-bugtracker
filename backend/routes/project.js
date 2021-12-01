@@ -2,6 +2,7 @@ const express = require("express");
 const projectController = require("../controllers/projectController");
 const ticketController = require("../controllers/ticketController");
 const commentController = require("../controllers/commentController");
+const assignController = require("../controllers/assignController");
 const router = express.Router();
 
 //Project
@@ -33,6 +34,12 @@ router.put(
 router.delete(
   "/:project_id/ticket/:ticket_id/comment/:comment_id",
   commentController.deleteComment
+);
+
+//Assign
+router.post(
+  "/:project_id/ticket/:ticket_id/assign/:user_id",
+  assignController.assignToUser
 );
 
 module.exports = router;
