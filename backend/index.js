@@ -2,7 +2,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const morgan = require("morgan");
-const errorHandler = require("./middlewares/errorHandler");
 require("dotenv").config();
 
 //Import routes
@@ -27,8 +26,5 @@ app.use("/api", apiRouter);
 app.get("/", (req, res) => {
   res.send("Hello world!");
 });
-
-//Global error handler
-app.use(errorHandler);
 
 app.listen(3000);
