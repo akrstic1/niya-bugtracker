@@ -103,8 +103,33 @@ const updateTicket = async (req, res) => {
   return res.json(savedProject);
 };
 
+const deleteTicket = async (req, res) => {
+  if (
+    !ObjectId.isValid(req.params.project_id) ||
+    !ObjectId.isValid(req.params.ticket_id)
+  ) {
+    return res.status(400).json({ message: "Bad object ID" });
+  }
+
+  const projectToDelete = await Project.findById(req.params.project_id);
+
+  const ticketToDelete = projectToDelete.tickets.id(req.params.ticket_id);
+  if (ticketToDelete == null) {
+    return res.status(404).json({ message: "Ticket not found!" });
+  }
+
+  try {
+    ticketToDelete.remove();
+    projectToDelete.save();
+    return res.json({ message: "Deleted sucessfully!" });
+  } catch (error) {
+    return res.status(500).send("Ticket not deleted!");
+  }
+};
+
 module.exports = {
   getByIdTicket,
   createTicket,
   updateTicket,
+  deleteTicket,
 };
