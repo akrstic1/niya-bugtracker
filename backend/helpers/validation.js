@@ -3,7 +3,7 @@ const joi = require("joi");
 const registerValidation = (data) => {
   const schema = joi.object({
     fullName: joi.string().required(),
-    email: joi.string().email().required(),
+    username: joi.string().min(6).max(20).required(),
     password: joi.string().min(6).required(),
     roles: joi.array().items(joi.string().regex(/^[0-9a-fA-F]{24}$/)),
   });
@@ -13,7 +13,7 @@ const registerValidation = (data) => {
 
 const loginValidation = (data) => {
   const schema = joi.object({
-    email: joi.string().email().required(),
+    username: joi.string().min(6).max(20).required(),
     password: joi.string().min(6).required(),
   });
 

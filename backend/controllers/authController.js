@@ -11,8 +11,8 @@ const register = async (req, res) => {
     return res.status(400).json(validation.error);
   }
 
-  if (await User.exists({ email: req.body.email })) {
-    return res.status(400).json({ message: "Email already in use!" });
+  if (await User.exists({ username: req.body.username })) {
+    return res.status(400).json({ message: "Username already in use!" });
   }
 
   for (const element of req.body.roles) {
@@ -23,7 +23,7 @@ const register = async (req, res) => {
 
   const newUser = new User({
     fullName: req.body.fullName,
-    email: req.body.email,
+    username: req.body.username,
     hashPassword: await User.setPassword(req.body.password),
     roles: req.body.roles,
   });
@@ -42,13 +42,15 @@ const login = async (req, res) => {
     return res.status(400).json(validation.error);
   }
 
-  const user = await User.findOne({ email: req.body.email }).populate("roles");
+  const user = await User.findOne({ username: req.body.username }).populate(
+    "roles"
+  );
 
   if (!user) {
-    return res.status(400).json({ message: "Email or password is wrong!" });
+    return res.status(400).json({ message: "Username or password is wrong!" });
   }
   if (!(await user.validPassword(req.body.password))) {
-    return res.status(400).json({ message: "Email or password is wrong!" });
+    return res.status(400).json({ message: "Username or password is wrong!" });
   }
 
   const token = user.generateJwt();

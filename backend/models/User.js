@@ -9,14 +9,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  email: {
+  username: {
     type: String,
     required: true,
     unique: true,
-    match: [
-      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      "Please enter a valid email",
-    ],
+    min: 6,
+    max: 20,
   },
   hashPassword: {
     type: String,
@@ -45,7 +43,7 @@ userSchema.methods.generateJwt = function () {
   return jwt.sign(
     {
       _id: this._id,
-      email: this.email,
+      username: this.username,
       fullName: this.fullName,
       roles: this.roles.map((p) => p.name),
     },
