@@ -2,7 +2,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const uniqueValidator = require("mongoose-unique-validator");
 
 const userSchema = new mongoose.Schema({
   fullName: {
@@ -27,8 +26,6 @@ const userSchema = new mongoose.Schema({
     },
   ],
 });
-
-userSchema.plugin(uniqueValidator);
 
 userSchema.statics.setPassword = async function (password) {
   const salt = await bcrypt.genSalt(10);

@@ -89,7 +89,7 @@ const updateUser = async (req, res) => {
       return res.status(403).json({ message: "Access Denied!" });
     }
 
-    await user.updateOne(req.body, { new: true });
+    await user.updateOne(req.body);
     user.save();
     return res.json(user);
   } catch (error) {

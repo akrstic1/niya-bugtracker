@@ -15,7 +15,7 @@ app.get("/", authorize(["Admin"]), (req, res) => {
 
 // routing
 app.use("/auth", authRouter);
-app.use("/user", userRouter);
+app.use("/user", authorize(), userRouter);
 app.use("/role", roleRouter);
 app.use("/project", authorize(), projectRouter);
 
