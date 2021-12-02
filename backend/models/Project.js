@@ -31,6 +31,20 @@ const assignSchema = new mongoose.Schema({
   },
 });
 
+const attachmentSchema = new mongoose.Schema(
+  {
+    fileName: {
+      type: String,
+      required: true,
+    },
+    uploader_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  },
+  { timestamps: true }
+);
+
 const ticketSchema = new mongoose.Schema(
   {
     title: {
@@ -56,6 +70,7 @@ const ticketSchema = new mongoose.Schema(
     },
     comments: [commentSchema],
     assigns: [assignSchema],
+    attachments: [attachmentSchema],
   },
   { timestamps: true }
 );
