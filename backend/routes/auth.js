@@ -12,5 +12,6 @@ router.post("/register", authController.register);
 
 // Login
 router.post("/login", authController.login);
+router.post("/login/jwt", authController.loginWithJwt);
 
 module.exports = router;

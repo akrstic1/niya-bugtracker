@@ -47,15 +47,46 @@ const login = async (req, res) => {
   );
 
   if (!user) {
-    return res.status(400).json({ message: "Username or password is wrong!" });
+    return res.status(401).json({ message: "Username or password is wrong!" });
   }
   if (!(await user.validPassword(req.body.password))) {
-    return res.status(400).json({ message: "Username or password is wrong!" });
+    return res.status(401).json({ message: "Username or password is wrong!" });
   }
 
   const token = user.generateJwt();
 
-  return res.json(token);
+  return res.json({
+    user: {
+      fullName: user.fullName,
+      username: user.username,
+      roles: user.roles,
+    },
+    token: token,
+  });
 };
 
-module.exports = { register, login };
+const loginWithJwt = async (req, res) => {
+  if (!req.body.token) {
+    return res.status(400).json({ message: "Please provide a token." });
+  }
+
+  var verification = User.verifyJwt(req.body.token);
+  if (verification) {
+    const user = await User.findById({ _id: verification._id }).populate(
+      "roles"
+    );
+
+    return res.json({
+      user: {
+        fullName: user.fullName,
+        username: user.username,
+        roles: user.roles,
+      },
+      token: req.body.token,
+    });
+  } else {
+    return res.status(400).json({ message: "Token not valid!" });
+  }
+};
+
+module.exports = { register, login, loginWithJwt };

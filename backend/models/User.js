@@ -48,4 +48,14 @@ userSchema.methods.generateJwt = function () {
   );
 };
 
+userSchema.statics.verifyJwt = function (token) {
+  return jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) {
+      return null;
+    } else {
+      return user;
+    }
+  });
+};
+
 module.exports = mongoose.model("User", userSchema);
