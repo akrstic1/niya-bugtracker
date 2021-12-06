@@ -10,6 +10,7 @@
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list *ngIf="currentUser.username">
       <a mat-list-item [routerLink]="['/index']">Home</a>
+      <a mat-list-item [routerLink]="['/index/projects']">Projects</a>
       <a mat-list-item (click)="logout()">Logout</a>
     </mat-nav-list>
     <mat-nav-list *ngIf="!currentUser.username">
