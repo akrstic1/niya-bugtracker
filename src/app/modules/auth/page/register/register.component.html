@@ -1,1 +1,60 @@
-<p>register works!</p>
+<div style="text-align: center">
+  <mat-card class="form-container">
+    <mat-card-title>Register</mat-card-title>
+    <form
+      [formGroup]="registerForm"
+      (ngSubmit)="register()"
+      class="register-form"
+      autocomplete="off"
+    >
+      <mat-form-field appearance="outline" class="form-element">
+        <mat-label>Full Name</mat-label>
+        <input matInput formControlName="fullName" />
+        <mat-error
+          *ngIf="
+            registerForm.controls['fullName']?.touched &&
+            registerForm.controls['fullName']?.invalid
+          "
+        >
+          <span *ngIf="registerForm.get('fullName')!.errors"
+            >This field is mandatory.</span
+          >
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="form-element">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username" />
+        <mat-error
+          *ngIf="
+            registerForm.controls['username']?.touched &&
+            registerForm.controls['username']?.invalid
+          "
+        >
+          <span *ngIf="registerForm.get('username')!.errors"
+            >This field is mandatory.</span
+          >
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="form-element">
+        <mat-label>Password</mat-label>
+        <input type="password" matInput formControlName="password" />
+        <mat-error
+          *ngIf="
+            registerForm.controls['password']?.touched &&
+            registerForm.controls['password']?.invalid
+          "
+        >
+          <span *ngIf="registerForm.get('password')!.errors"
+            >This field is mandatory.</span
+          >
+        </mat-error>
+      </mat-form-field>
+
+      <div>
+        <button type="submit" mat-raised-button color="primary">
+          Register
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</div>

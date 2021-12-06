@@ -5,7 +5,7 @@ const registerValidation = (data) => {
     fullName: joi.string().required(),
     username: joi.string().min(6).max(20).required(),
     password: joi.string().min(6).required(),
-    roles: joi.array().items(joi.string().regex(/^[0-9a-fA-F]{24}$/)),
+    //roles: joi.array().items(joi.string().regex(/^[0-9a-fA-F]{24}$/)),
   });
 
   return schema.validate(data);

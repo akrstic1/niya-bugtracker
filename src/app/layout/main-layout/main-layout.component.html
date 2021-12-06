@@ -8,10 +8,13 @@
     [opened]="(isHandset$ | async) === false"
   >
     <mat-toolbar>Menu</mat-toolbar>
-    <mat-nav-list>
-      <a mat-list-item href="#">Link 1</a>
-      <a mat-list-item href="#">Link 2</a>
-      <a mat-list-item href="#">Link 3</a>
+    <mat-nav-list *ngIf="currentUser.username">
+      <a mat-list-item [routerLink]="['/index']">Home</a>
+      <a mat-list-item (click)="logout()">Logout</a>
+    </mat-nav-list>
+    <mat-nav-list *ngIf="!currentUser.username">
+      <a mat-list-item [routerLink]="['/login']">Login</a>
+      <a mat-list-item [routerLink]="['/register']">Register</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -25,7 +28,7 @@
       >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>niya-bugtracker</span>
+      <span>NIYA</span>
     </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>

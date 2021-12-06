@@ -1,43 +1,24 @@
-<form
-  [formGroup]="loginForm"
-  class="login-form"
-  (ngSubmit)="login()"
-  autocomplete="off"
->
-  <div style="display: flex; justify-content: center">
-    <mat-card class="form-container">
-      <mat-card-title>Login</mat-card-title>
-
-      <!-- Username -->
-      <div>
-        <mat-form-field>
-          <mat-label>Username</mat-label>
-          <input
-            matInput
-            placeholder="Ex. profanis"
-            formControlName="username"
-          />
-        </mat-form-field>
-      </div>
-      <!-- /Username -->
-
-      <!-- Password -->
-      <div>
-        <mat-form-field>
-          <mat-label>Password</mat-label>
-          <input
-            matInput
-            type="password"
-            placeholder="Ex. s3c3tP@ss"
-            formControlName="password"
-          />
-        </mat-form-field>
-      </div>
-      <!-- /Password -->
+<div style="text-align: center">
+  <mat-card class="form-container">
+    <mat-card-title>Login</mat-card-title>
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="login()"
+      class="login-form"
+      autocomplete="off"
+    >
+      <mat-form-field appearance="outline" class="form-element">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="form-element">
+        <mat-label>Password</mat-label>
+        <input type="password" matInput formControlName="password" />
+      </mat-form-field>
 
       <div>
         <button type="submit" mat-raised-button color="primary">Login</button>
       </div>
-    </mat-card>
-  </div>
-</form>
+    </form>
+  </mat-card>
+</div>

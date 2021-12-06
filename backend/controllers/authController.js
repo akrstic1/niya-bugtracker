@@ -1,5 +1,5 @@
 const User = require("../models/User");
-const Role = require("../models/Role");
+
 const {
   registerValidation,
   loginValidation,
@@ -15,17 +15,17 @@ const register = async (req, res) => {
     return res.status(400).json({ message: "Username already in use!" });
   }
 
-  for (const element of req.body.roles) {
-    if (!(await Role.exists({ _id: element }))) {
-      return res.status(400).json({ message: "Role doesn't exist!" });
-    }
-  }
+  // for (const element of req.body.roles) {
+  //   if (!(await Role.exists({ _id: element }))) {
+  //     return res.status(400).json({ message: "Role doesn't exist!" });
+  //   }
+  // }
 
   const newUser = new User({
     fullName: req.body.fullName,
     username: req.body.username,
     hashPassword: await User.setPassword(req.body.password),
-    roles: req.body.roles,
+    roles: [],
   });
 
   try {
