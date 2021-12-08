@@ -17,4 +17,8 @@ export class UserService {
       registerUserRequest
     );
   }
+
+  getAllUsers(): Observable<User[]> {
+    return this._httpClient.get<User[]>(environment.API_URL + '/user');
+  }
 }

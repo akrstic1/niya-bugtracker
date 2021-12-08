@@ -1,7 +1,12 @@
 <mat-toolbar color="basic">
   <span>All projects</span>
 </mat-toolbar>
-<button style="margin: 5px" mat-raised-button color="accent">
+<button
+  style="margin: 5px"
+  [routerLink]="'create'"
+  mat-raised-button
+  color="accent"
+>
   Create a new project
 </button>
 <div class="mat-elevation-z8">
@@ -42,7 +47,12 @@
         >
           View
         </button>
-        <button style="margin: 5px" mat-raised-button color="accent">
+        <button
+          style="margin: 5px"
+          mat-raised-button
+          [routerLink]="['/index/projects/' + row._id + '/edit']"
+          color="accent"
+        >
           Edit
         </button>
       </td>

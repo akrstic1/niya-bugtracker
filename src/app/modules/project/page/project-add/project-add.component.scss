@@ -1,0 +1,29 @@
+.create-project-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+}
+
+.demo-table {
+  width: 100%;
+  border: 0.5px solid #e8e8e8;
+}
+
+.table-container {
+  max-height: 500px;
+  overflow: auto;
+}
+
+.mat-row .mat-cell {
+  border-bottom: 1px solid transparent;
+  border-top: 1px solid transparent;
+  cursor: pointer;
+}
+
+.mat-row:hover .mat-cell {
+  border-color: currentColor;
+}
+
+.demo-row-is-clicked {
+  font-weight: bold;
+}
