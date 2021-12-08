@@ -24,11 +24,17 @@ const getByIdProject = async (req, res) => {
   }
 
   try {
-    const projectById = await Project.findById(req.params.project_id).populate({
-      path: "users",
-      select: "-hashPassword",
-      populate: { path: "roles" },
-    });
+    const projectById = await Project.findById(req.params.project_id)
+      .populate({
+        path: "users",
+        select: "-hashPassword",
+        populate: { path: "roles" },
+      })
+      .populate({
+        path: "tickets.assigns.assignedToUser_id",
+        select: "-hashPassword",
+        populate: { path: "roles" },
+      });
 
     if (projectById == null) {
       return res.status(404).json({ message: "Project not found." });

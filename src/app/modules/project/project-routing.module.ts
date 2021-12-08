@@ -8,18 +8,13 @@ import { ProjectListComponent } from './page/project-list/project-list.component
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'project-list',
-    pathMatch: 'full',
-  },
-  {
-    path: 'project-list',
     component: ProjectListComponent,
     resolve: {
       projectListResponse: ProjectListResolver,
     },
   },
   {
-    path: 'project-detail/:id',
+    path: ':id',
     component: ProjectDetailComponent,
     resolve: {
       projectDetailResponse: ProjectDetailResolver,

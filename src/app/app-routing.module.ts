@@ -34,8 +34,14 @@ const routes: Routes = [
             (m) => m.ProjectModule
           ),
       },
+      {
+        path: 'tickets',
+        loadChildren: () =>
+          import('./modules/ticket/ticket.module').then((m) => m.TicketModule),
+      },
     ],
   },
+  { path: '**', redirectTo: '/', pathMatch: 'full' },
 ];
 
 @NgModule({
