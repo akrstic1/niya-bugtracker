@@ -34,6 +34,11 @@ const getByIdProject = async (req, res) => {
         path: "tickets.assigns.assignedToUser_id",
         select: "-hashPassword",
         populate: { path: "roles" },
+      })
+      .populate({
+        path: "tickets.submitter_id",
+        select: "-hashPassword",
+        populate: { path: "roles" },
       });
 
     if (projectById == null) {

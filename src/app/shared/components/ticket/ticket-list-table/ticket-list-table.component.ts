@@ -36,6 +36,7 @@ export class TicketListTableComponent implements AfterViewInit {
 
   ngOnInit(): void {
     this.dataSource.data = this.ticketData;
+    console.log(this.ticketData);
   }
 
   ngAfterViewInit(): void {
