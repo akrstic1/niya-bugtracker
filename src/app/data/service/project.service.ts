@@ -39,4 +39,10 @@ export class ProjectService {
       editProjectRequest
     );
   }
+
+  deleteProject(projectId: string): Observable<Project> {
+    return this._httpClient.delete<Project>(
+      environment.API_URL + '/project/' + projectId
+    );
+  }
 }

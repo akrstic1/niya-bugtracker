@@ -1,9 +1,7 @@
-<mat-toolbar color="basic">
-  <span>All projects</span>
-</mat-toolbar>
+<h2 style="margin: 5px">All Projects</h2>
 <button
-  style="margin: 5px"
   [routerLink]="'create'"
+  style="margin-bottom: 5px"
   mat-raised-button
   color="accent"
 >
@@ -40,20 +38,26 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
       <td mat-cell *matCellDef="let row">
         <button
-          style="margin: 5px"
           [routerLink]="['/index/projects/' + row._id]"
-          mat-raised-button
-          color="accent"
+          mat-mini-fab
+          color="primary"
         >
-          View
+          <mat-icon>view_list</mat-icon>
         </button>
         <button
           style="margin: 5px"
-          mat-raised-button
+          mat-mini-fab
           [routerLink]="['/index/projects/' + row._id + '/edit']"
-          color="accent"
+          color="primary"
         >
-          Edit
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button
+          mat-mini-fab
+          (click)="deleteProjectDialog(row.name, row._id)"
+          color="warn"
+        >
+          <mat-icon>delete</mat-icon>
         </button>
       </td>
     </ng-container>

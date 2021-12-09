@@ -94,7 +94,8 @@ const deleteProject = async (req, res) => {
     if (deletedProject == null) {
       return res.status(404).json({ messsage: "Project not found." });
     }
-    return res.status(204).json(null);
+    console.log(deletedProject, "tu");
+    return res.status(200).json(deletedProject);
   } catch (error) {
     return res.status(404).json(error);
   }
