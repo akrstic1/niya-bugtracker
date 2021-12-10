@@ -1,118 +1,136 @@
-<div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="space-between start">
-  <!--Ticket info-->
-  <mat-card fxFlex="40">
-    <mat-card-header>
-      <mat-card-title>Project Details</mat-card-title>
-      <mat-card-subtitle
-        ><a style="cursor: pointer; color: #fa3b82">Back to Project Details</a>
-        |
-        <a style="cursor: pointer; color: #fa3b82"
-          >Edit Ticket</a
-        ></mat-card-subtitle
-      >
-    </mat-card-header>
-    <mat-divider></mat-divider>
-    <div fxLayout="column">
-      <div
-        fxFlex="50"
-        fxLayout="row"
-        fxLayoutAlign="space-between stretch"
-        class="dashboard-card"
-      >
-        <div fxLayout="column" fxFlex="50">
-          <div style="padding-top: 16px">
-            <h2>Ticket Title</h2>
-            <p>{{ ticketData.title }}</p>
-            <mat-divider></mat-divider>
+<div fxLayout="column" fxLayoutGap="16px">
+  <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="space-between start">
+    <!--Ticket info-->
+    <mat-card fxFlex="40">
+      <mat-card-header>
+        <mat-card-title>Project Details</mat-card-title>
+        <mat-card-subtitle
+          ><a
+            [routerLink]="['/index/projects/' + projectData._id]"
+            style="cursor: pointer; color: #fa3b82"
+            >Back to Project Details</a
+          >
+          |
+          <a style="cursor: pointer; color: #fa3b82"
+            >Edit Ticket</a
+          ></mat-card-subtitle
+        >
+      </mat-card-header>
+      <mat-divider></mat-divider>
+      <div fxLayout="column">
+        <div
+          fxFlex="50"
+          fxLayout="row"
+          fxLayoutAlign="space-between stretch"
+          class="dashboard-card"
+        >
+          <div fxLayout="column" fxFlex="50">
+            <div style="padding-top: 16px">
+              <h2>Ticket Title</h2>
+              <p>{{ ticketData.title }}</p>
+              <mat-divider></mat-divider>
+            </div>
+            <div style="padding-top: 16px">
+              <h2>Priority</h2>
+              <p>{{ ticketData.priority }}</p>
+              <mat-divider></mat-divider>
+            </div>
+            <div style="padding-top: 16px">
+              <h2>Submitted by</h2>
+              <p>{{ ticketData.submitter_id.fullName }}</p>
+              <mat-divider></mat-divider>
+            </div>
+            <div style="padding-top: 16px">
+              <h2>Created At</h2>
+              <p>{{ ticketData.createdAt | date: "hh:mm / dd.MM.yyyy" }}</p>
+            </div>
           </div>
-          <div style="padding-top: 16px">
-            <h2>Priority</h2>
-            <p>{{ ticketData.priority }}</p>
-            <mat-divider></mat-divider>
-          </div>
-          <div style="padding-top: 16px">
-            <h2>Submitted by</h2>
-            <p>{{ ticketData.submitter_id.fullName }}</p>
-            <mat-divider></mat-divider>
-          </div>
-          <div style="padding-top: 16px">
-            <h2>Created At</h2>
-            <p>{{ ticketData.createdAt | date: "hh:mm / dd.MM.yyyy" }}</p>
-          </div>
-        </div>
 
-        <div fxLayout="column" fxFlex="50">
-          <div style="padding-top: 16px">
-            <h2>Project</h2>
-            <p>{{ projectData.name }}</p>
-          </div>
-          <div style="padding-top: 16px">
-            <h2>Status</h2>
-            <p>{{ ticketData.status }}</p>
-          </div>
-          <div style="padding-top: 16px">
-            <h2>Assigned to</h2>
-            <p>
-              {{
-                ticketData.assigns[0]
-                  ? ticketData.assigns[0].assignedToUser_id?.fullName
-                  : "Not Assigned"
-              }}
-            </p>
-            <mat-divider></mat-divider>
-          </div>
-          <div style="padding-top: 16px">
-            <h2>Updated At</h2>
-            <p>{{ ticketData.updatedAt | date: "hh:mm / dd.MM.yyyy" }}</p>
+          <div fxLayout="column" fxFlex="50">
+            <div style="padding-top: 16px">
+              <h2>Project</h2>
+              <p>{{ projectData.name }}</p>
+            </div>
+            <div style="padding-top: 16px">
+              <h2>Status</h2>
+              <p>{{ ticketData.status }}</p>
+            </div>
+            <div style="padding-top: 16px">
+              <h2>Assigned to</h2>
+              <p>
+                {{
+                  ticketData.assigns[0]
+                    ? ticketData.assigns[0].assignedToUser_id?.fullName
+                    : "Not Assigned"
+                }}
+              </p>
+              <mat-divider></mat-divider>
+            </div>
+            <div style="padding-top: 16px">
+              <h2>Updated At</h2>
+              <p>{{ ticketData.updatedAt | date: "hh:mm / dd.MM.yyyy" }}</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </mat-card>
+    </mat-card>
 
-  <mat-card class="table-container" fxFlex="60">
-    <mat-card-header>
-      <mat-card-title>Assign History</mat-card-title>
-      <mat-card-subtitle>Ticket Assign History</mat-card-subtitle>
-    </mat-card-header>
-    <mat-divider></mat-divider>
-    <mat-card-content style="z-index: 150; margin-top: 1px">
-      <table
-        mat-table
-        [dataSource]="assingsTableDataSource"
-        class="mat-elevation-z8 assign-table"
-      >
-        <!-- Assigned By Column -->
-        <ng-container matColumnDef="assignedByUser_id">
-          <th mat-header-cell *matHeaderCellDef>Assigned By</th>
-          <td mat-cell *matCellDef="let element">
-            {{ element.assignedByUser_id.fullName }}
-          </td>
-        </ng-container>
+    <mat-card class="table-container" fxFlex="60">
+      <mat-card-header>
+        <mat-card-title>Assign History</mat-card-title>
+        <mat-card-subtitle>Ticket Assign History</mat-card-subtitle>
+      </mat-card-header>
+      <mat-divider></mat-divider>
+      <mat-card-content style="z-index: 150; margin-top: 1px">
+        <table
+          mat-table
+          [dataSource]="assingsTableDataSource"
+          class="mat-elevation-z8 assign-table"
+        >
+          <!-- Assigned By Column -->
+          <ng-container matColumnDef="assignedByUser_id">
+            <th mat-header-cell *matHeaderCellDef>Assigned By</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.assignedByUser_id.fullName }}
+            </td>
+          </ng-container>
 
-        <!-- Assigned To Column -->
-        <ng-container matColumnDef="assignedToUser_id">
-          <th mat-header-cell *matHeaderCellDef>Assigned To</th>
-          <td mat-cell *matCellDef="let element">
-            {{ element.assignedToUser_id.fullName }}
-          </td>
-        </ng-container>
+          <!-- Assigned To Column -->
+          <ng-container matColumnDef="assignedToUser_id">
+            <th mat-header-cell *matHeaderCellDef>Assigned To</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.assignedToUser_id.fullName }}
+            </td>
+          </ng-container>
 
-        <!-- Assigned Date Column -->
-        <ng-container matColumnDef="assignedDate">
-          <th mat-header-cell *matHeaderCellDef>Assigned Date</th>
-          <td mat-cell *matCellDef="let element">
-            {{ element.assignedDate | date: "hh:mm / dd.MM.yyyy" }}
-          </td>
-        </ng-container>
+          <!-- Assigned Date Column -->
+          <ng-container matColumnDef="assignedDate">
+            <th mat-header-cell *matHeaderCellDef>Assigned Date</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.assignedDate | date: "hh:mm / dd.MM.yyyy" }}
+            </td>
+          </ng-container>
 
-        <tr
-          mat-header-row
-          *matHeaderRowDef="displayedColumns; sticky: true"
-          style="z-index: 0"
-        ></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-      </table>
-    </mat-card-content>
-  </mat-card>
+          <tr
+            mat-header-row
+            *matHeaderRowDef="displayedColumns; sticky: true"
+            style="z-index: 0"
+          ></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="space-between start">
+    <mat-card fxFlex="40">
+      <mat-card-header>
+        <mat-card-title>Ticket Description</mat-card-title>
+      </mat-card-header>
+      <mat-divider></mat-divider>
+
+      <mat-card-content style="padding-top: 16px">
+        <p>{{ ticketData.description }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>
