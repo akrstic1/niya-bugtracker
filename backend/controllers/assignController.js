@@ -30,6 +30,14 @@ const assignToUser = async (req, res) => {
     return res.status(404).json({ message: "Ticket not found!" });
   }
 
+  if (
+    ticketToAssign.assigns.sort(function (a, b) {
+      return new Date(b.assignedDate) - new Date(a.assignedDate);
+    })[0].assignedToUser_id == req.params.user_id
+  ) {
+    return res.status(400).json({ message: "User already assigned!" });
+  }
+
   const newAssign = {
     assignedToUser_id: req.params.user_id,
     assignedByUser_id: req.user._id,

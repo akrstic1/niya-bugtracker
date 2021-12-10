@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Ticket } from '../model/ticket.model';
+import { Project } from '../model/project.model';
 
 @Injectable({
   providedIn: 'root',
@@ -10,9 +10,9 @@ import { Ticket } from '../model/ticket.model';
 export class TicketService {
   constructor(private _httpClient: HttpClient) {}
 
-  getAllTickets(projectId: string, ticketId: string): Observable<Ticket[]> {
-    return this._httpClient.get<Ticket[]>(
-      environment.API_URL + '/project/' + projectId + '/ticket/' + ticketId
+  getByIdTicket(ticketId: string): Observable<Project> {
+    return this._httpClient.get<Project>(
+      environment.API_URL + '/ticket/' + ticketId
     );
   }
 }

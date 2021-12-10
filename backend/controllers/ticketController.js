@@ -6,17 +6,18 @@ const {
 const ObjectId = require("mongoose").Types.ObjectId;
 
 const getByIdTicket = async (req, res) => {
-  if (
-    !ObjectId.isValid(req.params.project_id) ||
-    !ObjectId.isValid(req.params.ticket_id)
-  ) {
+  if (!ObjectId.isValid(req.params.ticket_id)) {
     return res.status(400).json({ message: "Bad object ID" });
   }
 
   try {
-    const allProjectTickets = await Project.findById(req.params.project_id, {
-      tickets: 1,
+    const allProjectTickets = await Project.findOne({
+      "tickets._id": req.params.ticket_id,
     }).populate([
+      {
+        path: "users",
+        select: "-hashPassword",
+      },
       {
         path: "tickets.submitter_id",
         select: "-hashPassword",
@@ -25,18 +26,36 @@ const getByIdTicket = async (req, res) => {
         path: "tickets.comments.commenter_id",
         select: "-hashPassword",
       },
+      {
+        path: "tickets.assigns.assignedToUser_id",
+        select: "-hashPassword",
+      },
+      {
+        path: "tickets.assigns.assignedByUser_id",
+        select: "-hashPassword",
+      },
     ]);
     if (allProjectTickets == null) {
       return res.status(404).json({ message: "Project not found." });
     }
 
     const ticketById = allProjectTickets.tickets.id(req.params.ticket_id);
+
     if (ticketById == null) {
       return res.status(404).json({ message: "Ticket not found." });
     }
 
-    return res.json(ticketById);
+    //Filtering tickets
+    allProjectTickets.tickets = ticketById;
+
+    allProjectTickets.tickets[0].assigns =
+      allProjectTickets.tickets[0].assigns.sort(function (a, b) {
+        return new Date(b.assignedDate) - new Date(a.assignedDate);
+      });
+
+    return res.json(allProjectTickets);
   } catch (error) {
+    console.log(error);
     return res.status(404).send(error);
   }
 };
@@ -83,14 +102,16 @@ const updateTicket = async (req, res) => {
     return res.status(400).json(validation.error);
   }
 
-  if (
-    !ObjectId.isValid(req.params.project_id) ||
-    !ObjectId.isValid(req.params.ticket_id)
-  ) {
+  if (!ObjectId.isValid(req.params.ticket_id)) {
     return res.status(400).json({ message: "Bad object ID" });
   }
 
-  const projectToUpdate = await Project.findById(req.params.project_id);
+  const projectToUpdate = await Project.findOne({
+    "tickets._id": req.params.ticket_id,
+  });
+  if (projectToUpdate == null) {
+    return res.status(404).json({ message: "Ticket not found!" });
+  }
 
   const ticketToUpdate = projectToUpdate.tickets.id(req.params.ticket_id);
   if (ticketToUpdate == null) {
@@ -104,23 +125,25 @@ const updateTicket = async (req, res) => {
 };
 
 const deleteTicket = async (req, res) => {
-  if (
-    !ObjectId.isValid(req.params.project_id) ||
-    !ObjectId.isValid(req.params.ticket_id)
-  ) {
+  if (!ObjectId.isValid(req.params.ticket_id)) {
     return res.status(400).json({ message: "Bad object ID" });
   }
 
-  const projectToDelete = await Project.findById(req.params.project_id);
+  const project = await Project.findOne({
+    "tickets._id": req.params.ticket_id,
+  });
+  if (project == null) {
+    return res.status(404).json({ message: "Ticket not found!" });
+  }
 
-  const ticketToDelete = projectToDelete.tickets.id(req.params.ticket_id);
+  const ticketToDelete = project.tickets.id(req.params.ticket_id);
   if (ticketToDelete == null) {
     return res.status(404).json({ message: "Ticket not found!" });
   }
 
   try {
     ticketToDelete.remove();
-    projectToDelete.save();
+    project.save();
     return res.json({ message: "Deleted sucessfully!" });
   } catch (error) {
     return res.status(500).send("Ticket not deleted!");

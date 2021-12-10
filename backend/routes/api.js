@@ -6,6 +6,7 @@ const authRouter = require("./auth");
 const userRouter = require("./user");
 const roleRouter = require("./role");
 const projectRouter = require("./project");
+const ticketRouter = require("./ticket");
 
 const app = express();
 
@@ -18,5 +19,6 @@ app.use("/auth", authRouter);
 app.use("/user", authorize(), userRouter);
 app.use("/role", roleRouter);
 app.use("/project", authorize(), projectRouter);
+app.use("/ticket", authorize(), ticketRouter);
 
 module.exports = app;

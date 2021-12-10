@@ -1,11 +1,14 @@
 <!--Project info-->
 <mat-card class="dashboard-card" style="margin-bottom: 20px">
-  <mat-card-content class="dashboard-card-content" fxLayoutAlign="space-evenly">
+  <mat-card-content
+    class="dashboard-card-content"
+    fxLayoutAlign="space-evenly center"
+  >
     <div>
       <h2>Project name</h2>
       <p>{{ projectData.name }}</p>
     </div>
-    <div>
+    <div style="max-width: 500px">
       <h2>Project description</h2>
       <p>{{ projectData.description }}</p>
     </div>
@@ -20,11 +23,7 @@
   </mat-card-content>
 </mat-card>
 
-<div
-  fxLayout="row wrap"
-  fxLayoutAlign="space-between stretch"
-  fxLayoutGap="16px"
->
+<div fxLayout="row wrap" fxLayoutAlign="space-between start" fxLayoutGap="16px">
   <!--Users on project-->
   <mat-card class="dashboard-card" fxFlex="calc(30%-16px)" fxFlex.lt-lg="100%">
     <mat-card-header>

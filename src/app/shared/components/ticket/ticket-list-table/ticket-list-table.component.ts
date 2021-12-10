@@ -35,13 +35,25 @@ export class TicketListTableComponent implements AfterViewInit {
   }
 
   ngOnInit(): void {
+    //Assign array sort for ease of use
+    this.ticketData.map((ticket) => {
+      ticket.assigns = ticket.assigns.sort((a, b) => {
+        return (
+          this.getTime(new Date(b.assignedDate)) -
+          this.getTime(new Date(a.assignedDate))
+        );
+      });
+    });
     this.dataSource.data = this.ticketData;
-    console.log(this.ticketData);
   }
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;
+  }
+
+  private getTime(date?: Date) {
+    return date != null ? date.getTime() : 0;
   }
 }
