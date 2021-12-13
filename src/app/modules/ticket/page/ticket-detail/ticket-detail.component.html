@@ -1,7 +1,7 @@
-<div fxLayout="column" fxLayoutGap="16px">
-  <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="space-between start">
+<div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="space-between start">
+  <div fxLayout="column" fxFlex="40" fxLayoutGap="16px">
     <!--Ticket info-->
-    <mat-card fxFlex="40">
+    <mat-card>
       <mat-card-header>
         <mat-card-title>Project Details</mat-card-title>
         <mat-card-subtitle
@@ -74,8 +74,53 @@
         </div>
       </div>
     </mat-card>
+    <!--Comment info-->
+    <mat-card fxFlex="40">
+      <mat-card-header>
+        <mat-card-title>Comments</mat-card-title>
+      </mat-card-header>
+      <form
+        [formGroup]="createCommentForm"
+        (ngSubmit)="createComment()"
+        #formDirective="ngForm"
+      >
+        <mat-form-field style="width: 100%" appearance="outline">
+          <mat-label>Leave a comment</mat-label>
+          <textarea formControlName="message" matInput rows="5"></textarea>
+        </mat-form-field>
+        <button
+          type="submit"
+          mat-raised-button
+          color="primary"
+          style="margin-bottom: 16px"
+        >
+          Comment
+        </button>
+      </form>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+        <div fxLayout="column">
+          <div
+            *ngFor="let comment of ticketData.comments; last as isLast"
+            style="padding-top: 16px"
+          >
+            <div class="comment-info-container">
+              <h3 style="padding-left: 10px">
+                <b>{{ comment.commenter_id.fullName }} </b>commented at
+                {{ comment.createdAt | date: "hh:mm / dd.MM.yyyy" }}
+              </h3>
+            </div>
+            <pre class="message">{{ comment.message }}</pre>
+            <mat-divider *ngIf="!isLast"></mat-divider>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
 
-    <div fxFlex="60">
+  <!--Ticket description and assign history-->
+  <div fxFlex="60">
+    <div fxLayout="column">
       <div fxLayout="column" fxLayoutAlign="end" fxLayoutGap="16px">
         <mat-card fxFlex="40">
           <mat-card-header>
@@ -85,9 +130,10 @@
             >
           </mat-card-header>
           <mat-divider></mat-divider>
-
           <mat-card-content style="padding-top: 16px">
-            <p>{{ ticketData.description }}</p>
+            <p style="max-height: 250px; overflow: auto">
+              {{ ticketData.description }}
+            </p>
           </mat-card-content>
         </mat-card>
         <mat-card class="table-container" fxFlex="60">
@@ -138,48 +184,9 @@
       </div>
     </div>
   </div>
-  <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="space-between start">
-    <!--Comment info-->
-    <mat-card fxFlex="40">
-      <mat-card-header>
-        <mat-card-title>Comments</mat-card-title>
-      </mat-card-header>
-      <form
-        [formGroup]="createCommentForm"
-        (ngSubmit)="createComment()"
-        #formDirective="ngForm"
-      >
-        <mat-form-field style="width: 100%" appearance="outline">
-          <mat-label>Leave a comment</mat-label>
-          <textarea formControlName="message" matInput rows="5"></textarea>
-        </mat-form-field>
-        <button
-          type="submit"
-          mat-raised-button
-          color="primary"
-          style="margin-bottom: 16px"
-        >
-          Comment
-        </button>
-      </form>
-      <mat-divider></mat-divider>
-      <mat-card-content>
-        <div fxLayout="column">
-          <div
-            *ngFor="let comment of ticketData.comments; last as isLast"
-            style="padding-top: 16px"
-          >
-            <div class="comment-info-container">
-              <h3 style="padding-left: 10px">
-                <b>{{ comment.commenter_id.fullName }} </b>commented at
-                {{ comment.createdAt | date: "hh:mm / dd.MM.yyyy" }}
-              </h3>
-            </div>
-            <pre class="message">{{ comment.message }}</pre>
-            <mat-divider *ngIf="!isLast"></mat-divider>
-          </div>
-        </div>
-      </mat-card-content>
-    </mat-card>
-  </div>
 </div>
+<div
+  fxLayout="row"
+  fxLayoutGap="16px"
+  fxLayoutAlign="space-between start"
+></div>
