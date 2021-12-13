@@ -18,7 +18,20 @@ a:active {
   width: 100%;
 }
 
-mat-card-content {
-  max-height: 384px;
+.assign-table-container {
+  max-height: 239px;
   overflow: auto;
+  z-index: 150;
+  margin-top: 1px;
+}
+
+.comment-info-container {
+  background-color: #f6f8fa;
+  border-radius: 25px;
+}
+
+.message {
+  border: 1px solid #f6f8fa;
+  padding: 10px;
+  border-radius: 25px;
 }

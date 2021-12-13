@@ -1,7 +1,6 @@
 const express = require("express");
 const multer = require("multer");
 const projectController = require("../controllers/projectController");
-const commentController = require("../controllers/commentController");
 const assignController = require("../controllers/assignController");
 const attachmentController = require("../controllers/attachmentController");
 const router = express.Router();
@@ -24,24 +23,6 @@ router.get("/:project_id", projectController.getByIdProject);
 router.post("/", projectController.createProject);
 router.put("/:project_id", projectController.updateProject);
 router.delete("/:project_id", projectController.deleteProject);
-
-//Comment
-router.get(
-  "/:project_id/ticket/:ticket_id/comment/:comment_id",
-  commentController.getByIdComment
-);
-router.post(
-  "/:project_id/ticket/:ticket_id/comment",
-  commentController.createComment
-);
-router.put(
-  "/:project_id/ticket/:ticket_id/comment/:comment_id",
-  commentController.updateComment
-);
-router.delete(
-  "/:project_id/ticket/:ticket_id/comment/:comment_id",
-  commentController.deleteComment
-);
 
 //Assign
 router.post(

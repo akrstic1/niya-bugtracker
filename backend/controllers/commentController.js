@@ -6,18 +6,17 @@ const {
 const ObjectId = require("mongoose").Types.ObjectId;
 
 const getByIdComment = async (req, res) => {
-  if (
-    !ObjectId.isValid(req.params.project_id) ||
-    !ObjectId.isValid(req.params.ticket_id) ||
-    !ObjectId.isValid(req.params.comment_id)
-  ) {
+  if (!ObjectId.isValid(req.params.comment_id)) {
     return res.status(400).json({ message: "Bad object ID" });
   }
 
   try {
-    const allProjectTickets = await Project.findById(req.params.project_id, {
-      tickets: 1,
-    }).populate([
+    const project = await Project.findOne(
+      { "tickets.comments._id": req.params.comment_id },
+      {
+        tickets: 1,
+      }
+    ).populate([
       {
         path: "tickets.submitter_id",
         select: "-hashPassword",
@@ -27,16 +26,11 @@ const getByIdComment = async (req, res) => {
         select: "-hashPassword",
       },
     ]);
-    if (allProjectTickets == null) {
-      return res.status(404).json({ message: "Project not found." });
+    if (project == null) {
+      return res.status(404).json({ message: "Comment not found." });
     }
 
-    const ticketById = allProjectTickets.tickets.id(req.params.ticket_id);
-    if (ticketById == null) {
-      return res.status(404).json({ message: "Ticket not found." });
-    }
-
-    const commentById = ticketById.comments.id(req.params.comment_id);
+    const commentById = project.tickets[0].comments.id(req.params.comment_id);
     if (commentById == null) {
       return res.status(404).json({ message: "Comment not found." });
     }
@@ -48,10 +42,7 @@ const getByIdComment = async (req, res) => {
 };
 
 const createComment = async (req, res) => {
-  if (
-    !ObjectId.isValid(req.params.project_id) ||
-    !ObjectId.isValid(req.params.ticket_id)
-  ) {
+  if (!ObjectId.isValid(req.params.ticket_id)) {
     return res.status(400).json({ message: "Bad object ID" });
   }
 
@@ -60,12 +51,14 @@ const createComment = async (req, res) => {
     return res.status(400).json(validation.error);
   }
 
-  const projectToUpdate = await Project.findById(req.params.project_id);
-  if (!projectToUpdate) {
-    return res.status(404).json({ message: "Project not found!" });
+  const project = await Project.findOne({
+    "tickets._id": req.params.ticket_id,
+  });
+  if (!project) {
+    return res.status(404).json({ message: "Ticket not found!" });
   }
 
-  if (!projectToUpdate.tickets.id(req.params.ticket_id)) {
+  if (!project.tickets.id(req.params.ticket_id)) {
     return res.status(404).json({ message: "Ticket not found!" });
   }
 
@@ -74,10 +67,10 @@ const createComment = async (req, res) => {
     commenter_id: req.user._id,
   };
 
-  projectToUpdate.tickets.id(req.params.ticket_id).comments.push(newComment);
+  project.tickets.id(req.params.ticket_id).comments.push(newComment);
 
   try {
-    const savedTicket = await projectToUpdate.save();
+    const savedTicket = await project.save();
     res.json(savedTicket);
   } catch (error) {
     res.status(400).send(error);
@@ -90,22 +83,18 @@ const updateComment = async (req, res) => {
     return res.status(400).json(validation.error);
   }
 
-  if (
-    !ObjectId.isValid(req.params.project_id) ||
-    !ObjectId.isValid(req.params.ticket_id) ||
-    !ObjectId.isValid(req.params.comment_id)
-  ) {
+  if (!ObjectId.isValid(req.params.comment_id)) {
     return res.status(400).json({ message: "Bad object ID" });
   }
 
-  const projectToUpdate = await Project.findById(req.params.project_id);
-
-  const ticketToUpdate = projectToUpdate.tickets.id(req.params.ticket_id);
-  if (ticketToUpdate == null) {
-    return res.status(404).json({ message: "Ticket not found!" });
+  const project = await Project.findOne({
+    "tickets.comments._id": req.params.comment_id,
+  });
+  if (!project) {
+    return res.status(404).json({ message: "Comment not found!" });
   }
 
-  const commentToUpdate = ticketToUpdate.comments.id(req.params.comment_id);
+  const commentToUpdate = project.tickets[0].comments.id(req.params.comment_id);
   if (commentToUpdate == null) {
     return res.status(404).json({ message: "Comment not found!" });
   }
@@ -113,7 +102,7 @@ const updateComment = async (req, res) => {
   commentToUpdate.set(req.body);
 
   try {
-    const savedProject = await projectToUpdate.save();
+    const savedProject = await project.save();
     return res.json(savedProject);
   } catch (error) {
     return res.status(500).json(error);
@@ -121,29 +110,25 @@ const updateComment = async (req, res) => {
 };
 
 const deleteComment = async (req, res) => {
-  if (
-    !ObjectId.isValid(req.params.project_id) ||
-    !ObjectId.isValid(req.params.ticket_id) ||
-    !ObjectId.isValid(req.params.comment_id)
-  ) {
+  if (!ObjectId.isValid(req.params.comment_id)) {
     return res.status(400).json({ message: "Bad object ID" });
   }
 
-  const projectToDelete = await Project.findById(req.params.project_id);
-
-  const ticketToDelete = projectToDelete.tickets.id(req.params.ticket_id);
-  if (ticketToDelete == null) {
-    return res.status(404).json({ message: "Ticket not found!" });
+  const project = await Project.findOne({
+    "tickets.comments._id": req.params.comment_id,
+  });
+  if (!project) {
+    return res.status(404).json({ message: "Comment not found!" });
   }
 
-  const commentToDelete = ticketToDelete.comments.id(req.params.comment_id);
+  const commentToDelete = project.tickets[0].comments.id(req.params.comment_id);
   if (commentToDelete == null) {
     return res.status(404).json({ message: "Comment not found!" });
   }
 
   try {
     commentToDelete.remove();
-    projectToDelete.save();
+    project.save();
     return res.json({ message: "Deleted sucessfully!" });
   } catch (error) {
     return res.status(500).send("Ticket not deleted!");

@@ -7,6 +7,7 @@ const userRouter = require("./user");
 const roleRouter = require("./role");
 const projectRouter = require("./project");
 const ticketRouter = require("./ticket");
+const commentRouter = require("./comment");
 
 const app = express();
 
@@ -20,5 +21,6 @@ app.use("/user", authorize(), userRouter);
 app.use("/role", roleRouter);
 app.use("/project", authorize(), projectRouter);
 app.use("/ticket", authorize(), ticketRouter);
+app.use("/comment", authorize(), commentRouter);
 
 module.exports = app;

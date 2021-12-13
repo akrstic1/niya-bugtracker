@@ -75,61 +75,110 @@
       </div>
     </mat-card>
 
-    <mat-card class="table-container" fxFlex="60">
-      <mat-card-header>
-        <mat-card-title>Assign History</mat-card-title>
-        <mat-card-subtitle>Ticket Assign History</mat-card-subtitle>
-      </mat-card-header>
-      <mat-divider></mat-divider>
-      <mat-card-content style="z-index: 150; margin-top: 1px">
-        <table
-          mat-table
-          [dataSource]="assingsTableDataSource"
-          class="mat-elevation-z8 assign-table"
-        >
-          <!-- Assigned By Column -->
-          <ng-container matColumnDef="assignedByUser_id">
-            <th mat-header-cell *matHeaderCellDef>Assigned By</th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.assignedByUser_id.fullName }}
-            </td>
-          </ng-container>
+    <div fxFlex="60">
+      <div fxLayout="column" fxLayoutAlign="end" fxLayoutGap="16px">
+        <mat-card fxFlex="40">
+          <mat-card-header>
+            <mat-card-title>Ticket Description</mat-card-title>
+            <mat-card-subtitle
+              >Submitters initial issue description</mat-card-subtitle
+            >
+          </mat-card-header>
+          <mat-divider></mat-divider>
 
-          <!-- Assigned To Column -->
-          <ng-container matColumnDef="assignedToUser_id">
-            <th mat-header-cell *matHeaderCellDef>Assigned To</th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.assignedToUser_id.fullName }}
-            </td>
-          </ng-container>
+          <mat-card-content style="padding-top: 16px">
+            <p>{{ ticketData.description }}</p>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="table-container" fxFlex="60">
+          <mat-card-header>
+            <mat-card-title>Assign History</mat-card-title>
+            <mat-card-subtitle>Ticket Assign History</mat-card-subtitle>
+          </mat-card-header>
+          <mat-divider></mat-divider>
+          <mat-card-content class="assign-table-container">
+            <table
+              mat-table
+              [dataSource]="assingsTableDataSource"
+              class="mat-elevation-z8 assign-table"
+            >
+              <!-- Assigned By Column -->
+              <ng-container matColumnDef="assignedByUser_id">
+                <th mat-header-cell *matHeaderCellDef>Assigned By</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.assignedByUser_id.fullName }}
+                </td>
+              </ng-container>
 
-          <!-- Assigned Date Column -->
-          <ng-container matColumnDef="assignedDate">
-            <th mat-header-cell *matHeaderCellDef>Assigned Date</th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.assignedDate | date: "hh:mm / dd.MM.yyyy" }}
-            </td>
-          </ng-container>
+              <!-- Assigned To Column -->
+              <ng-container matColumnDef="assignedToUser_id">
+                <th mat-header-cell *matHeaderCellDef>Assigned To</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.assignedToUser_id.fullName }}
+                </td>
+              </ng-container>
 
-          <tr
-            mat-header-row
-            *matHeaderRowDef="displayedColumns; sticky: true"
-            style="z-index: 0"
-          ></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-        </table>
-      </mat-card-content>
-    </mat-card>
+              <!-- Assigned Date Column -->
+              <ng-container matColumnDef="assignedDate">
+                <th mat-header-cell *matHeaderCellDef>Assigned Date</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.assignedDate | date: "hh:mm / dd.MM.yyyy" }}
+                </td>
+              </ng-container>
+
+              <tr
+                mat-header-row
+                *matHeaderRowDef="displayedColumns; sticky: true"
+                style="z-index: 0"
+              ></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
   </div>
   <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="space-between start">
+    <!--Comment info-->
     <mat-card fxFlex="40">
       <mat-card-header>
-        <mat-card-title>Ticket Description</mat-card-title>
+        <mat-card-title>Comments</mat-card-title>
       </mat-card-header>
+      <form
+        [formGroup]="createCommentForm"
+        (ngSubmit)="createComment()"
+        #formDirective="ngForm"
+      >
+        <mat-form-field style="width: 100%" appearance="outline">
+          <mat-label>Leave a comment</mat-label>
+          <textarea formControlName="message" matInput rows="5"></textarea>
+        </mat-form-field>
+        <button
+          type="submit"
+          mat-raised-button
+          color="primary"
+          style="margin-bottom: 16px"
+        >
+          Comment
+        </button>
+      </form>
       <mat-divider></mat-divider>
-
-      <mat-card-content style="padding-top: 16px">
-        <p>{{ ticketData.description }}</p>
+      <mat-card-content>
+        <div fxLayout="column">
+          <div
+            *ngFor="let comment of ticketData.comments; last as isLast"
+            style="padding-top: 16px"
+          >
+            <div class="comment-info-container">
+              <h3 style="padding-left: 10px">
+                <b>{{ comment.commenter_id.fullName }} </b>commented at
+                {{ comment.createdAt | date: "hh:mm / dd.MM.yyyy" }}
+              </h3>
+            </div>
+            <pre class="message">{{ comment.message }}</pre>
+            <mat-divider *ngIf="!isLast"></mat-divider>
+          </div>
+        </div>
       </mat-card-content>
     </mat-card>
   </div>
