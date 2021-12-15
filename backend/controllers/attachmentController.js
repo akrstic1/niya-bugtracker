@@ -4,32 +4,32 @@ const Project = require("../models/Project");
 const ObjectId = require("mongoose").Types.ObjectId;
 
 const getAttachment = async (req, res) => {
-  if (
-    !ObjectId.isValid(req.params.project_id) ||
-    !ObjectId.isValid(req.params.ticket_id) ||
-    !ObjectId.isValid(req.params.attachment_id)
-  ) {
+  if (!ObjectId.isValid(req.params.attachment_id)) {
     return res.status(400).json({ message: "Bad object ID" });
   }
 
-  const project = await Project.findById(req.params.project_id);
+  const project = await Project.findOne({
+    "tickets.attachments._id": req.params.attachment_id,
+  });
   if (!project) {
-    return res.status(404).json({ message: "Project not found!" });
+    return res.status(404).json({ message: "Attachment not found!" });
   }
 
-  const ticket = project.tickets.id(req.params.ticket_id);
-  if (!ticket) {
-    return res.status(404).json({ message: "Ticket not found!" });
+  let attachment;
+  for (let i = 0; i < project.tickets.length; i++) {
+    if (project.tickets[i].attachments.id(req.params.attachment_id)) {
+      attachment = project.tickets[i].attachments.id(req.params.attachment_id);
+    }
   }
 
-  const attachmentToDelete = ticket.attachments.id(req.params.attachment_id);
-  if (attachmentToDelete == null) {
+  if (attachment == null) {
+    console.log(project);
     return res.status(404).json({ message: "Attachment not found!" });
   }
 
   try {
     return res.sendFile(
-      path.join(__dirname, "../tmp/images", attachmentToDelete.fileName)
+      path.join(__dirname, "../tmp/images", attachment.fileName)
     );
   } catch (error) {
     console.log(error);
@@ -38,17 +38,15 @@ const getAttachment = async (req, res) => {
 };
 
 const saveAttachment = async (req, res) => {
-  if (
-    !ObjectId.isValid(req.params.project_id) ||
-    !ObjectId.isValid(req.params.ticket_id) ||
-    !ObjectId.isValid(req.params.user_id)
-  ) {
+  if (!ObjectId.isValid(req.params.ticket_id)) {
     return res.status(400).json({ message: "Bad object ID" });
   }
 
-  const project = await Project.findById(req.params.project_id);
+  const project = await Project.findOne({
+    "tickets._id": req.params.ticket_id,
+  });
   if (!project) {
-    return res.status(404).json({ message: "Project not found!" });
+    return res.status(404).json({ message: "Ticket not found!" });
   }
 
   if (!project.users.includes(req.user._id)) {
@@ -59,7 +57,7 @@ const saveAttachment = async (req, res) => {
   if (!ticketToUpload) {
     return res.status(404).json({ message: "Ticket not found!" });
   }
-
+  console.log(req.files);
   for (const file of req.files) {
     const newAttachment = {
       fileName: file.filename,
@@ -76,25 +74,25 @@ const saveAttachment = async (req, res) => {
 };
 
 const deleteAttachment = async (req, res) => {
-  if (
-    !ObjectId.isValid(req.params.project_id) ||
-    !ObjectId.isValid(req.params.ticket_id) ||
-    !ObjectId.isValid(req.params.attachment_id)
-  ) {
+  if (!ObjectId.isValid(req.params.attachment_id)) {
     return res.status(400).json({ message: "Bad object ID" });
   }
 
-  const project = await Project.findById(req.params.project_id);
+  const project = await Project.findOne({
+    "tickets.attachments._id": req.params.attachment_id,
+  });
   if (!project) {
-    return res.status(404).json({ message: "Project not found!" });
+    return res.status(404).json({ message: "Attachment not found!" });
   }
 
-  const ticket = project.tickets.id(req.params.ticket_id);
-  if (!ticket) {
-    return res.status(404).json({ message: "Ticket not found!" });
+  let attachmentToDelete;
+  for (let i = 0; i < project.tickets.length; i++) {
+    if (project.tickets[i].attachments.id(req.params.attachment_id)) {
+      attachmentToDelete = project.tickets[i].attachments.id(
+        req.params.attachment_id
+      );
+    }
   }
-
-  const attachmentToDelete = ticket.attachments.id(req.params.attachment_id);
   if (attachmentToDelete == null) {
     return res.status(404).json({ message: "Attachment not found!" });
   }

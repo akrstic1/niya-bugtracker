@@ -35,3 +35,15 @@ a:active {
   padding: 10px;
   border-radius: 25px;
 }
+
+/* Handy CSS trick to ensure image maintains aspect ratio */
+img {
+  display: block;
+  max-height: 100%;
+  max-width: 100%;
+}
+
+/* Styling for image container */
+.image-container {
+  max-width: 500px;
+}

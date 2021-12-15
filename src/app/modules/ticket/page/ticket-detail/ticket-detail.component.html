@@ -91,7 +91,7 @@
         <button
           type="submit"
           mat-raised-button
-          color="primary"
+          color="accent"
           style="margin-bottom: 16px"
         >
           Comment
@@ -110,7 +110,65 @@
                 {{ comment.createdAt | date: "hh:mm / dd.MM.yyyy" }}
               </h3>
             </div>
-            <pre class="message">{{ comment.message }}</pre>
+            <div
+              fxLayout="row"
+              fxLayoutGap="16px"
+              fxLayoutAlign="space-between center"
+              *ngIf="commentToEdit != comment._id"
+              style="padding: 10px"
+            >
+              <pre fxFlex="90" class="message">{{ comment.message }}</pre>
+              <div fxLayout="column" fxLayoutGap="16px">
+                <button
+                  (click)="
+                    commentToEdit = comment._id;
+                    editCommentForm.get('message')!.setValue(comment.message)
+                  "
+                  fxFlex="10"
+                  mat-mini-fab
+                  color="primary"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button (click)="deleteComment(comment._id)" fxFlex="10" mat-mini-fab color="warn">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+            <form
+              fxLayout="row"
+              fxLayoutGap="16px"
+              fxLayoutAlign="space-between center"
+              *ngIf="commentToEdit == comment._id"
+              style="padding: 10px"
+              [formGroup]="editCommentForm"
+              (ngSubmit)="editComment(comment._id)"
+            >
+              <textarea
+                matInput
+                formControlName="message"
+                fxFlex="90"
+                style="border: 1px solid #fa3b82; padding: 10px"
+                onfocus='this.style.height = "";this.style.height = this.scrollHeight+1 + "px"'
+              ></textarea>
+              <div fxLayout="column" fxLayoutGap="16px">
+                <button
+                  (click)="editComment(comment._id)"
+                  mat-mini-fab
+                  color="accent"
+                >
+                  <mat-icon>done</mat-icon>
+                </button>
+                <button
+                  (click)="commentToEdit = ''"
+                  mat-mini-fab
+                  color="primary"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
+            </form>
+
             <mat-divider *ngIf="!isLast"></mat-divider>
           </div>
         </div>
@@ -120,7 +178,7 @@
 
   <!--Ticket description and assign history-->
   <div fxFlex="60">
-    <div fxLayout="column">
+    <div fxLayout="column" fxLayoutGap="16px">
       <div fxLayout="column" fxLayoutAlign="end" fxLayoutGap="16px">
         <mat-card fxFlex="40">
           <mat-card-header>
@@ -182,11 +240,91 @@
           </mat-card-content>
         </mat-card>
       </div>
+      <!--Attachment detail-->
+      <mat-card fxFlex="40">
+        <mat-card-header>
+          <mat-card-title>Attachments</mat-card-title>
+        </mat-card-header>
+        <ngx-dropzone
+          accept="image/jpeg,image/jpg,image/png,image/gif"
+          (change)="onSelect($event)"
+        >
+          <ngx-dropzone-label>Upload images</ngx-dropzone-label>
+          <ngx-dropzone-image-preview
+            ngProjectAs="ngx-dropzone-preview"
+            *ngFor="let f of filesToUpload"
+            [file]="f"
+            [removable]="true"
+            (removed)="onRemove(f)"
+          >
+            <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+          </ngx-dropzone-image-preview>
+        </ngx-dropzone>
+        <button
+          mat-raised-button
+          color="accent"
+          style="margin-bottom: 16px; margin-top: 16px"
+          (click)="uploadImage()"
+        >
+          Upload Images
+        </button>
+        <mat-divider></mat-divider>
+        <mat-card-content>
+          <div fxLayout="column">
+            <div
+              *ngFor="
+                let attachment of attachmentInfoAndDataUrls;
+                last as isLast
+              "
+              style="padding-top: 16px"
+            >
+              <div class="comment-info-container">
+                <h3 style="padding-left: 10px">
+                  <b>{{ attachment.attachmentInfo.uploader_id.fullName }} </b
+                  >posted at
+                  {{
+                    attachment.attachmentInfo.createdAt
+                      | date: "hh:mm / dd.MM.yyyy"
+                  }}
+                </h3>
+              </div>
+              <figure
+                class="image-container"
+                fxLayout="row"
+                fxLayoutGap="16px"
+                fxLayoutAlign="space-between center"
+              >
+                <div fxFlex="80">
+                  <img [src]="attachment.attachmentData" />
+                  <figcaption>
+                    {{ attachment.attachmentInfo.fileName }}
+                  </figcaption>
+                </div>
+                <div>
+                  <button
+                    mat-fab
+                    color="warn"
+                    (click)="
+                      deleteAttachmentDialog(
+                        attachment.attachmentInfo.fileName,
+                        attachment.attachmentInfo._id
+                      )
+                    "
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </figure>
+              <mat-divider *ngIf="!isLast"></mat-divider>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
     </div>
   </div>
 </div>
 <div
   fxLayout="row"
   fxLayoutGap="16px"
-  fxLayoutAlign="space-between start"
+  fxLayoutAlign="space-between center"
 ></div>

@@ -34,6 +34,11 @@ const getByIdTicket = async (req, res) => {
         path: "tickets.assigns.assignedByUser_id",
         select: "-hashPassword",
       },
+      {
+        path: "tickets.attachments.uploader_id",
+        select: "-hashPassword",
+        populate: { path: "roles" },
+      },
     ]);
     if (allProjectTickets == null) {
       return res.status(404).json({ message: "Project not found." });

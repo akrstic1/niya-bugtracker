@@ -8,6 +8,7 @@ const roleRouter = require("./role");
 const projectRouter = require("./project");
 const ticketRouter = require("./ticket");
 const commentRouter = require("./comment");
+const attachmentRouter = require("./attachment");
 
 const app = express();
 
@@ -22,5 +23,6 @@ app.use("/role", roleRouter);
 app.use("/project", authorize(), projectRouter);
 app.use("/ticket", authorize(), ticketRouter);
 app.use("/comment", authorize(), commentRouter);
+app.use("/attachment", authorize(), attachmentRouter);
 
 module.exports = app;
