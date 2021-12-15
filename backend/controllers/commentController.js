@@ -30,7 +30,12 @@ const getByIdComment = async (req, res) => {
       return res.status(404).json({ message: "Comment not found." });
     }
 
-    const commentById = project.tickets[0].comments.id(req.params.comment_id);
+    let commentById;
+    for (let i = 0; i < project.tickets.length; i++) {
+      if (project.tickets[i].comments.id(req.params.comment_id)) {
+        commentById = project.tickets[i].comments.id(req.params.comment_id);
+      }
+    }
     if (commentById == null) {
       return res.status(404).json({ message: "Comment not found." });
     }
@@ -94,7 +99,12 @@ const updateComment = async (req, res) => {
     return res.status(404).json({ message: "Comment not found!" });
   }
 
-  const commentToUpdate = project.tickets[0].comments.id(req.params.comment_id);
+  let commentToUpdate;
+  for (let i = 0; i < project.tickets.length; i++) {
+    if (project.tickets[i].comments.id(req.params.comment_id)) {
+      commentToUpdate = project.tickets[i].comments.id(req.params.comment_id);
+    }
+  }
   if (commentToUpdate == null) {
     return res.status(404).json({ message: "Comment not found!" });
   }
@@ -121,7 +131,12 @@ const deleteComment = async (req, res) => {
     return res.status(404).json({ message: "Comment not found!" });
   }
 
-  const commentToDelete = project.tickets[0].comments.id(req.params.comment_id);
+  let commentToDelete;
+  for (let i = 0; i < project.tickets.length; i++) {
+    if (project.tickets[i].comments.id(req.params.comment_id)) {
+      commentToDelete = project.tickets[i].comments.id(req.params.comment_id);
+    }
+  }
   if (commentToDelete == null) {
     return res.status(404).json({ message: "Comment not found!" });
   }

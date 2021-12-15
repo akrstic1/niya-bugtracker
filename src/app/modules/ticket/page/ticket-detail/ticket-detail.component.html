@@ -130,7 +130,12 @@
                 >
                   <mat-icon>edit</mat-icon>
                 </button>
-                <button (click)="deleteComment(comment._id)" fxFlex="10" mat-mini-fab color="warn">
+                <button
+                  (click)="deleteComment(comment._id)"
+                  fxFlex="10"
+                  mat-mini-fab
+                  color="warn"
+                >
                   <mat-icon>delete</mat-icon>
                 </button>
               </div>
@@ -149,6 +154,7 @@
                 formControlName="message"
                 fxFlex="90"
                 style="border: 1px solid #fa3b82; padding: 10px"
+                onkeypress='this.style.height = "";this.style.height = this.scrollHeight+1 + "px"'
                 onfocus='this.style.height = "";this.style.height = this.scrollHeight+1 + "px"'
               ></textarea>
               <div fxLayout="column" fxLayoutGap="16px">
