@@ -24,14 +24,14 @@ const routes: Routes = [
     },
   },
   {
-    path: ':id',
+    path: ':projectId',
     component: ProjectDetailComponent,
     resolve: {
       projectDetailResponse: ProjectDetailResolver,
     },
   },
   {
-    path: ':id/edit',
+    path: ':projectId/edit',
     component: ProjectEditComponent,
     resolve: {
       projectToEditResponse: ProjectDetailResolver,

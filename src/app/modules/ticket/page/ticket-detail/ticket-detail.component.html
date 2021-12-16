@@ -3,7 +3,7 @@
     <!--Ticket info-->
     <mat-card>
       <mat-card-header>
-        <mat-card-title>Project Details</mat-card-title>
+        <mat-card-title>Ticket Details</mat-card-title>
         <mat-card-subtitle
           ><a
             [routerLink]="['/index/projects/' + projectData._id]"
@@ -11,7 +11,7 @@
             >Back to Project Details</a
           >
           |
-          <a style="cursor: pointer; color: #fa3b82"
+          <a [routerLink]="['edit']" style="cursor: pointer; color: #fa3b82"
             >Edit Ticket</a
           ></mat-card-subtitle
         >
@@ -195,9 +195,9 @@
           </mat-card-header>
           <mat-divider></mat-divider>
           <mat-card-content style="padding-top: 16px">
-            <p style="max-height: 250px; overflow: auto">
-              {{ ticketData.description }}
-            </p>
+            <pre style="max-height: 250px; overflow: auto">{{
+              ticketData.description
+            }}</pre>
           </mat-card-content>
         </mat-card>
         <mat-card class="table-container" fxFlex="60">

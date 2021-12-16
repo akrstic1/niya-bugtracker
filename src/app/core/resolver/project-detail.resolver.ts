@@ -21,7 +21,7 @@ export class ProjectDetailResolver implements Resolve<Observable<Project>> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<Project> {
-    const projectId = route.params['id'];
+    const projectId = route.params['projectId'];
     return this._projectService.getByIdProject(projectId).pipe(
       catchError((err) => {
         this.router.navigate(['/index']);

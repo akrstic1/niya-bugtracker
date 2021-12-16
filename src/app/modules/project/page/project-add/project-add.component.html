@@ -4,7 +4,7 @@
       !isEditMode ? "Create Project" : "Edit Project"
     }}</mat-card-title>
     <div
-      fxLayout="row wrap"
+      fxLayout="row"
       fxLayoutAlign="space-between stretch"
       fxLayoutGap="16px"
     >
@@ -14,7 +14,7 @@
         (ngSubmit)="!isEditMode ? createProject() : editProject()"
         class="create-project-form"
         autocomplete="off"
-        fxFlex="30%"
+        fxFlex="40"
       >
         <h3>Basic project information</h3>
         <mat-form-field appearance="outline" class="form-element">
@@ -57,7 +57,7 @@
         </div>
       </form>
       <!--USER TABLE-->
-      <div class="table-container" fxFlex="60%">
+      <div class="table-container" fxFlex="60">
         <h3>Assign users to the project</h3>
         <table
           mat-table

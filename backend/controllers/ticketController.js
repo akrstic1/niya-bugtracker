@@ -95,7 +95,7 @@ const createTicket = async (req, res) => {
 
   try {
     const savedProject = await projectToUpdate.save();
-    res.json(savedProject);
+    res.json(savedProject.tickets[savedProject.tickets.length - 1]);
   } catch (error) {
     res.status(400).send(error);
   }

@@ -9,6 +9,7 @@ const projectRouter = require("./project");
 const ticketRouter = require("./ticket");
 const commentRouter = require("./comment");
 const attachmentRouter = require("./attachment");
+const assignRouter = require("./assign");
 
 const app = express();
 
@@ -24,5 +25,6 @@ app.use("/project", authorize(), projectRouter);
 app.use("/ticket", authorize(), ticketRouter);
 app.use("/comment", authorize(), commentRouter);
 app.use("/attachment", authorize(), attachmentRouter);
+app.use("/assign", authorize(), assignRouter);
 
 module.exports = app;
