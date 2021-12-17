@@ -60,9 +60,11 @@ export class TicketAddComponent implements OnInit {
         priority: [this.ticketToEdit.priority, [Validators.required]],
         status: [this.ticketToEdit.status, [Validators.required]],
       });
-      console.log(this.editTicketForm);
-      this.userAssign = this.ticketToEdit.assigns[0].assignedToUser_id?._id;
-      this.initialUserAssign = this.userAssign;
+
+      if (this.ticketToEdit.assigns[0]) {
+        this.userAssign = this.ticketToEdit.assigns[0].assignedToUser_id?._id;
+        this.initialUserAssign = this.userAssign;
+      }
     }
 
     //TABLE SETUP

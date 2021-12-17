@@ -1,0 +1,52 @@
+<div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="space-evenly start">
+  <mat-card fxFlex="0 0 auto">
+    <mat-card-content
+      fxLayout="column"
+      fxLayoutGap="16px"
+      fxLayoutAlign="center center"
+    >
+      <div>
+        <h2>Username</h2>
+        <p>{{ currentUser.username }}</p>
+      </div>
+      <div>
+        <h2>Full Name</h2>
+        <p>{{ currentUser.fullName }}</p>
+      </div>
+      <div>
+        <h2>Roles</h2>
+        <p>{{ currentUserRoles }}</p>
+      </div>
+      <div>
+        <h2>Assigned Projects</h2>
+        <p>{{ userInfoProjects.length }}</p>
+      </div>
+      <div>
+        <h2>Assigned Tickets</h2>
+        <p>{{ userInfoSubmittedTickets.length }}</p>
+      </div>
+      <div>
+        <h2>Submitted Tickets</h2>
+        <p>{{ userInfoAssignedTickets.length }}</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-tab-group fxFlex="80" dynamicHeight>
+    <mat-tab label="Projects"> </mat-tab>
+    <mat-tab label="Submitted Tickets">
+      <div style="margin: 10px">
+        <app-ticket-list-table
+          [ticketData]="userInfoSubmittedTickets"
+        ></app-ticket-list-table>
+      </div>
+    </mat-tab>
+    <mat-tab label="Assigned Tickets">
+      <div style="margin: 10px">
+        <app-ticket-list-table
+          [ticketData]="userInfoAssignedTickets"
+        ></app-ticket-list-table>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

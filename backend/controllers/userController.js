@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Project = require("../models/Project");
 const {
   changePasswordValidation,
   updateUserValidation,
@@ -97,4 +98,45 @@ const updateUser = async (req, res) => {
   }
 };
 
-module.exports = { getAllUsers, getUserById, changePassword, updateUser };
+const getUserInfo = async (req, res) => {
+  if (!ObjectId.isValid(req.params.user_id)) {
+    return res.status(400).json({ message: "Bad object ID" });
+  }
+  const projectByUser = await Project.find({
+    $or: [
+      { users: req.params.user_id },
+      { "tickets.submitter_id": req.params.user_id },
+      { "tickets.assigns.assignedToUser_id": req.params.user_id },
+    ],
+  }).populate([
+    {
+      path: "users",
+      select: "-hashPassword",
+      populate: { path: "roles" },
+    },
+    {
+      path: "tickets.assigns.assignedToUser_id",
+      select: "-hashPassword",
+      populate: { path: "roles" },
+    },
+    {
+      path: "tickets.submitter_id",
+      select: "-hashPassword",
+      populate: { path: "roles" },
+    },
+    {
+      path: "tickets.attachments.uploader_id",
+      select: "-hashPassword",
+      populate: { path: "roles" },
+    },
+  ]);
+  res.json(projectByUser);
+};
+
+module.exports = {
+  getAllUsers,
+  getUserById,
+  changePassword,
+  updateUser,
+  getUserInfo,
+};

@@ -11,6 +11,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
+    redirectTo: '/index',
   },
   {
     path: 'create/:projectId',

@@ -57,6 +57,7 @@ const login = async (req, res) => {
 
   return res.json({
     user: {
+      _id: user._id,
       fullName: user.fullName,
       username: user.username,
       roles: user.roles,
@@ -78,6 +79,7 @@ const loginWithJwt = async (req, res) => {
 
     return res.json({
       user: {
+        _id: user._id,
         fullName: user.fullName,
         username: user.username,
         roles: user.roles,

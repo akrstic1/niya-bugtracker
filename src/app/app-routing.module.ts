@@ -39,6 +39,11 @@ const routes: Routes = [
         loadChildren: () =>
           import('./modules/ticket/ticket.module').then((m) => m.TicketModule),
       },
+      {
+        path: 'user',
+        loadChildren: () =>
+          import('./modules/user/user.module').then((m) => m.UserModule),
+      },
     ],
   },
   { path: '**', redirectTo: '/', pathMatch: 'full' },
