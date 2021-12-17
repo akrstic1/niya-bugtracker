@@ -33,7 +33,13 @@
   </mat-card>
 
   <mat-tab-group fxFlex="80" dynamicHeight>
-    <mat-tab label="Projects"> </mat-tab>
+    <mat-tab label="Projects">
+      <div style="margin: 10px">
+        <app-project-list-table
+          [projectData]="userInfoProjects"
+        ></app-project-list-table>
+      </div>
+    </mat-tab>
     <mat-tab label="Submitted Tickets">
       <div style="margin: 10px">
         <app-ticket-list-table

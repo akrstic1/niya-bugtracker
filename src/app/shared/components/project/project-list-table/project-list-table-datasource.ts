@@ -1,24 +1,22 @@
 import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { ActivatedRoute } from '@angular/router';
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Project } from 'src/app/data/model/project.model';
 
 /**
- * Data source for the ProjectList view. This class should
+ * Data source for the ProjectListTable view. This class should
  * encapsulate all logic for fetching and manipulating the displayed data
  * (including sorting, pagination, and filtering).
  */
-export class ProjectListDataSource extends DataSource<Project> {
+export class ProjectListTableDataSource extends DataSource<Project> {
   data: Project[] = [];
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;
 
-  constructor(private route: ActivatedRoute) {
+  constructor() {
     super();
-    this.data = this.route.snapshot.data['projectListResponse'];
   }
 
   /**
