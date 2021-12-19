@@ -37,7 +37,7 @@
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <mat-toolbar style="z-index: 1000" color="primary">
+    <mat-toolbar style="z-index: 1000; font-size: 16px" color="primary">
       <button
         type="button"
         aria-label="Toggle sidenav"
@@ -47,7 +47,14 @@
       >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>NIYA</span>
+      <span
+        >Logged in as:
+        <span
+          style="color: black; cursor: pointer"
+          [routerLink]="['/index/user/' + currentUser._id]"
+          >{{ currentUser.username }}</span
+        ></span
+      >
     </mat-toolbar>
     <div class="router-container">
       <router-outlet></router-outlet>

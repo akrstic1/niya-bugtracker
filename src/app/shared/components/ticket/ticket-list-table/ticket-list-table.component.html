@@ -1,3 +1,14 @@
+<button
+  style="margin-bottom: 16px"
+  (click)="showClosedTickets ? hideTickets() : showTickets()"
+  mat-raised-button
+>
+  {{
+    showClosedTickets
+      ? "Hide Closed/Resolved Tickets"
+      : "Show Closed/Resolved Tickets"
+  }}
+</button>
 <div class="mat-elevation-z8">
   <table mat-table class="full-width-table" matSort aria-label="Elements">
     <!-- Title Column -->
@@ -43,7 +54,7 @@
     </ng-container>
     <!-- Action Column -->
     <ng-container matColumnDef="action">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+      <th mat-header-cell *matHeaderCellDef mat-header>Action</th>
       <td mat-cell *matCellDef="let row">
         <button
           style="margin: 5px"

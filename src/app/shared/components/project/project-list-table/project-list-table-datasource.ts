@@ -77,6 +77,12 @@ export class ProjectListTableDataSource extends DataSource<Project> {
       switch (this.sort?.active) {
         case 'name':
           return compare(a.name, b.name, isAsc);
+        case 'description':
+          return compare(a.description, b.description, isAsc);
+        case 'users':
+          return compare(a.users.length, b.users.length, isAsc);
+        case 'tickets':
+          return compare(a.tickets.length, b.tickets.length, isAsc);
         default:
           return 0;
       }

@@ -5,6 +5,11 @@
     fxLayoutAlign="space-evenly center"
   >
     <div>
+      <button mat-mini-fab [routerLink]="['edit']" color="primary">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+    <div>
       <h2>Project name</h2>
       <p>{{ projectData.name }}</p>
     </div>

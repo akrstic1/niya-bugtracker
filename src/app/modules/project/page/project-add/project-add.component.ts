@@ -99,7 +99,7 @@ export class ProjectAddComponent implements OnInit {
         .editProject(editProjectRequest, this.projectToEdit._id)
         .subscribe({
           next: (res) => {
-            this._snackBar.open(`Project successfully created!`, 'Close', {
+            this._snackBar.open(`Project successfully edited!`, 'Close', {
               duration: 3000,
             });
             this.router.navigate(['/index/projects']);

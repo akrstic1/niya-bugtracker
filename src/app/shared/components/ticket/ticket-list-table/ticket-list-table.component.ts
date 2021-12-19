@@ -18,6 +18,8 @@ export class TicketListTableComponent implements AfterViewInit {
 
   @Input() ticketData: Ticket[] = [];
 
+  showClosedTickets: boolean = true;
+
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = [
     'title',
@@ -35,7 +37,7 @@ export class TicketListTableComponent implements AfterViewInit {
   }
 
   ngOnInit(): void {
-    //Assign array sort for ease of use
+    //Assign array sort for correct displaying of assigned user
     this.ticketData.map((ticket) => {
       ticket.assigns = ticket.assigns.sort((a, b) => {
         return (
@@ -44,6 +46,23 @@ export class TicketListTableComponent implements AfterViewInit {
         );
       });
     });
+
+    //Sort tickets by update time and status
+    this.ticketData.sort((a, b) => {
+      return (
+        this.getTime(new Date(a.updatedAt)) -
+        this.getTime(new Date(b.updatedAt))
+      );
+    });
+
+    const statusSort = ['Closed/Inactivity', 'Resolved', 'Open'];
+    this.ticketData.sort((a, b) => {
+      return statusSort.indexOf(a.status) < statusSort.indexOf(b.status)
+        ? 1
+        : -1;
+    });
+
+    //Put data into datasource for table
     this.dataSource.data = this.ticketData;
   }
 
@@ -51,6 +70,24 @@ export class TicketListTableComponent implements AfterViewInit {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;
+  }
+
+  public showTickets() {
+    this.showClosedTickets = true;
+
+    this.dataSource.data = this.ticketData;
+    this.table.dataSource = this.dataSource.connect();
+  }
+
+  public hideTickets() {
+    this.showClosedTickets = false;
+
+    const filteredTickets = this.ticketData.filter((data) => {
+      return data.status == 'Open';
+    });
+
+    this.dataSource.data = filteredTickets;
+    this.table.dataSource = this.dataSource.connect();
   }
 
   private getTime(date?: Date) {

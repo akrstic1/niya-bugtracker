@@ -78,7 +78,7 @@ export class UserListTableDataSource extends DataSource<User> {
         case 'fullName':
           return compare(a.fullName, b.fullName, isAsc);
         case 'username':
-          return compare(+a.username, +b.username, isAsc);
+          return compare(a.username, b.username, isAsc);
         default:
           return 0;
       }

@@ -107,7 +107,7 @@
           Comment
         </button>
       </form>
-      <mat-divider></mat-divider>
+      <mat-divider *ngIf="ticketData.comments.length"></mat-divider>
       <mat-card-content>
         <div fxLayout="column">
           <div
@@ -213,7 +213,11 @@
             }}</pre>
           </mat-card-content>
         </mat-card>
-        <mat-card class="table-container" fxFlex="60">
+        <mat-card
+          *ngIf="assingsTableDataSource.length"
+          class="table-container"
+          fxFlex="60"
+        >
           <mat-card-header>
             <mat-card-title>Assign History</mat-card-title>
             <mat-card-subtitle>Ticket Assign History</mat-card-subtitle>
@@ -287,7 +291,7 @@
         >
           Upload Images
         </button>
-        <mat-divider></mat-divider>
+        <mat-divider *ngIf="attachmentInfoAndDataUrls.length"></mat-divider>
         <mat-card-content>
           <div fxLayout="column">
             <div
