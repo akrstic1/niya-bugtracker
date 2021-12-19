@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from 'src/app/core/service/auth.service';
 import { Project } from 'src/app/data/model/project.model';
 import { Ticket } from 'src/app/data/model/ticket.model';
 import { User } from 'src/app/data/model/user.model';
@@ -21,13 +20,10 @@ export class UserDetailComponent implements OnInit {
 
   showTable!: string | null;
 
-  constructor(
-    private _authService: AuthService,
-    private route: ActivatedRoute
-  ) {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.currentUser = this._authService.user;
+    this.currentUser = this.route.snapshot.data['userDetailResponse'];
     this.currentUserRoles = this.currentUser.roles
       .map((x) => x.name)
       .join(', ');

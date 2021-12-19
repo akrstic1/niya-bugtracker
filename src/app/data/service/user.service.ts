@@ -23,6 +23,10 @@ export class UserService {
     return this._httpClient.get<User[]>(environment.API_URL + '/user');
   }
 
+  getByIdUser(userId: string): Observable<User> {
+    return this._httpClient.get<User>(environment.API_URL + '/user/' + userId);
+  }
+
   getUserInfo(userId: string): Observable<Project[]> {
     return this._httpClient.get<Project[]>(
       environment.API_URL + '/user/' + userId + '/info'

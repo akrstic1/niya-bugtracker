@@ -5,6 +5,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -17,9 +18,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ProjectAddComponent } from './page/project-add/project-add.component';
 import { ProjectDetailComponent } from './page/project-detail/project-detail.component';
+import { ProjectEditComponent } from './page/project-edit/project-edit.component';
 import { ProjectListComponent } from './page/project-list/project-list.component';
 import { ProjectRoutingModule } from './project-routing.module';
-import { ProjectEditComponent } from './page/project-edit/project-edit.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { ProjectEditComponent } from './page/project-edit/project-edit.component
     FlexLayoutModule,
     MatInputModule,
     MatSnackBarModule,
+    MatDividerModule,
   ],
 })
 export class ProjectModule {}

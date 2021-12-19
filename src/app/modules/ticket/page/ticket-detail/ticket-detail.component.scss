@@ -47,3 +47,11 @@ img {
 .image-container {
   max-width: 500px;
 }
+
+.user-link:hover {
+  font-weight: bold;
+}
+
+.user-link {
+  cursor: pointer;
+}

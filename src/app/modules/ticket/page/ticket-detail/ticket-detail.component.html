@@ -37,7 +37,12 @@
             </div>
             <div style="padding-top: 16px">
               <h2>Submitted by</h2>
-              <p>{{ ticketData.submitter_id.fullName }}</p>
+              <p
+                class="user-link"
+                [routerLink]="['/index/user/' + ticketData.submitter_id._id]"
+              >
+                {{ ticketData.submitter_id.fullName }}
+              </p>
               <mat-divider></mat-divider>
             </div>
             <div style="padding-top: 16px">
@@ -57,12 +62,17 @@
             </div>
             <div style="padding-top: 16px">
               <h2>Assigned to</h2>
-              <p>
-                {{
-                  ticketData.assigns[0]
-                    ? ticketData.assigns[0].assignedToUser_id?.fullName
-                    : "Not Assigned"
-                }}
+              <p
+                *ngIf="ticketData.assigns[0]"
+                [ngClass]="{ 'user-link': ticketData.assigns[0] }"
+                [routerLink]="[
+                  '/index/user/' + ticketData.assigns[0].assignedToUser_id?._id
+                ]"
+              >
+                {{ ticketData.assigns[0].assignedToUser_id?.fullName }}
+              </p>
+              <p *ngIf="!ticketData.assigns[0]">
+                {{ "Not Assigned" }}
               </p>
               <mat-divider></mat-divider>
             </div>
@@ -105,7 +115,10 @@
             style="padding-top: 16px"
           >
             <div class="comment-info-container">
-              <h3 style="padding-left: 10px">
+              <h3
+                style="padding-left: 10px; cursor: pointer"
+                [routerLink]="['/index/user/' + comment.commenter_id._id]"
+              >
                 <b>{{ comment.commenter_id.fullName }} </b>commented at
                 {{ comment.createdAt | date: "hh:mm / dd.MM.yyyy" }}
               </h3>
@@ -285,7 +298,12 @@
               style="padding-top: 16px"
             >
               <div class="comment-info-container">
-                <h3 style="padding-left: 10px">
+                <h3
+                  style="padding-left: 10px; cursor: pointer"
+                  [routerLink]="[
+                    '/index/user/' + attachment.attachmentInfo.uploader_id._id
+                  ]"
+                >
                   <b>{{ attachment.attachmentInfo.uploader_id.fullName }} </b
                   >posted at
                   {{
