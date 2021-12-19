@@ -11,8 +11,23 @@
     <mat-nav-list *ngIf="currentUser.username">
       <a mat-list-item [routerLink]="['/index']">Home</a>
       <a mat-list-item [routerLink]="['/index/projects']">All Projects</a>
-      <a mat-list-item [routerLink]="['/index/user/' + currentUser._id]"
-        >My Details</a
+      <a
+        mat-list-item
+        [routerLink]="['/index/user/' + currentUser._id]"
+        [queryParams]="{ show: '0' }"
+        >Assigned Projects</a
+      >
+      <a
+        mat-list-item
+        [routerLink]="['/index/user/' + currentUser._id]"
+        [queryParams]="{ show: '1' }"
+        >Submitted Tickets</a
+      >
+      <a
+        mat-list-item
+        [routerLink]="['/index/user/' + currentUser._id]"
+        [queryParams]="{ show: '2' }"
+        >Assigned Tickets</a
       >
       <a mat-list-item (click)="logout()">Logout</a>
     </mat-nav-list>

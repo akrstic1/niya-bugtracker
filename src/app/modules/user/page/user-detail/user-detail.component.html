@@ -32,8 +32,8 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-tab-group fxFlex="80" dynamicHeight>
-    <mat-tab label="Projects">
+  <mat-tab-group [selectedIndex]="showTable" fxFlex="80" dynamicHeight>
+    <mat-tab label="Assigned Projects">
       <div style="margin: 10px">
         <app-project-list-table
           [projectData]="userInfoProjects"

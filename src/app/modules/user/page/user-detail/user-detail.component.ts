@@ -19,6 +19,8 @@ export class UserDetailComponent implements OnInit {
   userInfoSubmittedTickets: Ticket[] = [];
   userInfoAssignedTickets: Ticket[] = [];
 
+  showTable!: string | null;
+
   constructor(
     private _authService: AuthService,
     private route: ActivatedRoute
@@ -62,6 +64,11 @@ export class UserDetailComponent implements OnInit {
           }
         })
       );
+    });
+
+    //Access query parameters to display correct table first
+    this.route.queryParamMap.subscribe((params) => {
+      this.showTable = params.get('show');
     });
   }
 }
