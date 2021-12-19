@@ -47,7 +47,7 @@
             </div>
             <div style="padding-top: 16px">
               <h2>Created At</h2>
-              <p>{{ ticketData.createdAt | date: "hh:mm / dd.MM.yyyy" }}</p>
+              <p>{{ ticketData.createdAt | date: "HH:mm | dd.MM.yyyy" }}</p>
             </div>
           </div>
 
@@ -78,7 +78,7 @@
             </div>
             <div style="padding-top: 16px">
               <h2>Updated At</h2>
-              <p>{{ ticketData.updatedAt | date: "hh:mm / dd.MM.yyyy" }}</p>
+              <p>{{ ticketData.updatedAt | date: "HH:mm | dd.MM.yyyy" }}</p>
             </div>
           </div>
         </div>
@@ -120,7 +120,7 @@
                 [routerLink]="['/index/user/' + comment.commenter_id._id]"
               >
                 <b>{{ comment.commenter_id.fullName }} </b>commented at
-                {{ comment.createdAt | date: "hh:mm / dd.MM.yyyy" }}
+                {{ comment.createdAt | date: "HH:mm | dd.MM.yyyy" }}
               </h3>
             </div>
             <div
@@ -245,7 +245,7 @@
               <ng-container matColumnDef="assignedDate">
                 <th mat-header-cell *matHeaderCellDef>Assigned Date</th>
                 <td mat-cell *matCellDef="let element">
-                  {{ element.assignedDate | date: "hh:mm / dd.MM.yyyy" }}
+                  {{ element.assignedDate | date: "HH:mm | dd.MM.yyyy" }}
                 </td>
               </ng-container>
 
