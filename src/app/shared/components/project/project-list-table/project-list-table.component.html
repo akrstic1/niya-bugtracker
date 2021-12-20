@@ -42,6 +42,7 @@
           <mat-icon>view_list</mat-icon>
         </button>
         <button
+          *ngxPermissionsOnly="['Admin', 'Project manager']"
           style="margin: 5px"
           mat-mini-fab
           [routerLink]="['/index/projects/' + row._id + '/edit']"
@@ -50,6 +51,7 @@
           <mat-icon>edit</mat-icon>
         </button>
         <button
+          *ngxPermissionsOnly="['Admin', 'Project manager']"
           mat-mini-fab
           (click)="deleteProjectDialog(row.name, row._id)"
           color="warn"

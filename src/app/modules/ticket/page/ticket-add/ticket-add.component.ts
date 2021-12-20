@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/core/service/auth.service';
 import { Project } from 'src/app/data/model/project.model';
 import { CreateTicketRequest } from 'src/app/data/model/request/create-ticket-request.model';
 import { EditTicketRequest } from 'src/app/data/model/request/edit-ticket-request.model';
@@ -34,6 +35,7 @@ export class TicketAddComponent implements OnInit {
     private fb: FormBuilder,
     private _ticketService: TicketService,
     private _assignService: AssignService,
+    private _authService: AuthService,
     private _snackBar: MatSnackBar,
     private router: Router,
     private route: ActivatedRoute
@@ -45,6 +47,20 @@ export class TicketAddComponent implements OnInit {
     } else {
       this.projectData = this.route.snapshot.data['ticketDetailResponse'];
       this.ticketToEdit = this.projectData.tickets[0];
+    }
+
+    //reroute if no permission(not assinged to project)
+    if (
+      !(
+        this.projectData.users.some((x) => {
+          return x._id == this._authService.user._id;
+        }) ||
+        this._authService.user.roles.some((x) => {
+          return x.name == 'Admin';
+        })
+      )
+    ) {
+      this.router.navigate(['/index']);
     }
 
     if (!this.isEditMode) {

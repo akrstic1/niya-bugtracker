@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgxPermissionsService } from 'ngx-permissions';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { LoginUserRequest } from 'src/app/data/model/request/login-user-request.model';
 import { LoginUserResponse } from 'src/app/data/model/response/login-user-response.model';
@@ -27,7 +28,8 @@ export class AuthService {
   constructor(
     private _userAuthService: UserAuthService,
     private _localStorageService: LocalStorageService,
-    private router: Router
+    private router: Router,
+    private permissionService: NgxPermissionsService
   ) {}
 
   loginWithCredentials(loginUserRequest: LoginUserRequest) {
@@ -58,12 +60,18 @@ export class AuthService {
   logout() {
     this._localStorageService.removeToken();
     this.userSubject.next(new User());
+    this.permissionService.flushPermissions();
     this.router.navigate(['']);
   }
 
   public setAuthenticateResponseData(authenticatedUser: User, jwt: string) {
     if (authenticatedUser._id != '' && jwt != '') {
       this._localStorageService.setToken(jwt);
+    }
+    if (authenticatedUser.roles) {
+      this.permissionService.loadPermissions(
+        authenticatedUser.roles.map((role) => role.name)
+      );
     }
     this.userSubject.next(authenticatedUser);
   }

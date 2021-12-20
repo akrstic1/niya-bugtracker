@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
+import { NgxPermissionsService } from 'ngx-permissions';
+import { AuthService } from 'src/app/core/service/auth.service';
 import { Assign } from 'src/app/data/model/assign.model';
 import { Attachment } from 'src/app/data/model/attachment.model';
 import { Project } from 'src/app/data/model/project.model';
@@ -62,6 +64,8 @@ export class TicketDetailComponent implements OnInit {
     private _commentService: CommentService,
     private _ticketService: TicketService,
     private _attachmentService: AttachmentService,
+    private _permissionsService: NgxPermissionsService,
+    public _authService: AuthService,
     private dialog: MatDialog
   ) {
     this.projectData = this.route.snapshot.data['ticketDetailResponse'];
@@ -82,6 +86,8 @@ export class TicketDetailComponent implements OnInit {
     this.editCommentForm = this.fb.group({
       message: ['', [Validators.required]],
     });
+
+    this.addPermissions();
   }
 
   createComment(): void {
@@ -271,6 +277,56 @@ export class TicketDetailComponent implements OnInit {
   onRemove(event: any) {
     console.log(event);
     this.filesToUpload.splice(this.filesToUpload.indexOf(event), 1);
+  }
+
+  ngOnDestroy() {
+    this._permissionsService.removePermission('canEditTicket');
+    this._permissionsService.removePermission('canEditTicketManager');
+    this._permissionsService.removePermission('canCommentAndUploadPermission');
+  }
+
+  addPermissions() {
+    this.canEditTicketPermissions();
+    this.canCommentAndUploadPermissions();
+  }
+
+  canEditTicketPermissions() {
+    const currentUser = this._authService.user;
+
+    //can edit if submitter or asignee
+    const canEditTicket =
+      this.ticketData.submitter_id._id == currentUser._id ||
+      this.ticketData.assigns[0]?.assignedToUser_id._id == currentUser._id;
+    if (canEditTicket) {
+      this._permissionsService.addPermission('canEditTicket');
+    }
+
+    //can edit if project manager assigned to the project
+    const canEditTicketManager =
+      currentUser.roles.some((x) => {
+        return x.name == 'Project manager';
+      }) &&
+      this.projectData.users.some((x) => {
+        return x._id == currentUser._id;
+      });
+    if (canEditTicketManager) {
+      this._permissionsService.addPermission('canEditTicketManager');
+    }
+  }
+
+  canCommentAndUploadPermissions() {
+    const currentUser = this._authService.user;
+
+    //can comment and upload if submitter or asignee or assigned to project
+    const canCommentAndUploadPermission =
+      this.ticketData.submitter_id._id == currentUser._id ||
+      this.ticketData.assigns[0]?.assignedToUser_id._id == currentUser._id ||
+      this.projectData.users.some((x) => {
+        return x._id == currentUser._id;
+      });
+    if (canCommentAndUploadPermission) {
+      this._permissionsService.addPermission('canCommentAndUploadPermission');
+    }
   }
 
   private getTime(date?: Date) {

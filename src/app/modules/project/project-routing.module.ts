@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { NgxPermissionsGuard } from 'ngx-permissions';
 import { ProjectDetailResolver } from 'src/app/core/resolver/project-detail.resolver';
 import { ProjectListResolver } from 'src/app/core/resolver/project-list.resolver';
 import { UserListResolver } from 'src/app/core/resolver/user-list.resolver';
@@ -19,8 +20,15 @@ const routes: Routes = [
   {
     path: 'create',
     component: ProjectAddComponent,
+    canActivate: [NgxPermissionsGuard],
     resolve: {
       userListResponse: UserListResolver,
+    },
+    data: {
+      permissions: {
+        only: ['Admin', 'Project manager'],
+        redirectTo: '/index',
+      },
     },
   },
   {
@@ -33,9 +41,16 @@ const routes: Routes = [
   {
     path: ':projectId/edit',
     component: ProjectEditComponent,
+    canActivate: [NgxPermissionsGuard],
     resolve: {
       projectToEditResponse: ProjectDetailResolver,
       userListResponse: UserListResolver,
+    },
+    data: {
+      permissions: {
+        only: ['Admin', 'Project manager'],
+        redirectTo: '/index',
+      },
     },
   },
 ];

@@ -10,11 +10,19 @@
             style="cursor: pointer; color: #fa3b82"
             >Back to Project Details</a
           >
-          |
-          <a [routerLink]="['edit']" style="cursor: pointer; color: #fa3b82"
-            >Edit Ticket</a
-          ></mat-card-subtitle
-        >
+          <span
+            *ngxPermissionsOnly="[
+              'Admin',
+              'canEditTicket',
+              'canEditTicketManager'
+            ]"
+          >
+            |
+            <a [routerLink]="['edit']" style="cursor: pointer; color: #fa3b82"
+              >Edit Ticket</a
+            >
+          </span>
+        </mat-card-subtitle>
       </mat-card-header>
       <mat-divider></mat-divider>
       <div fxLayout="column">
@@ -90,6 +98,7 @@
         <mat-card-title>Comments</mat-card-title>
       </mat-card-header>
       <form
+        *ngxPermissionsOnly="['Admin', 'canCommentAndUploadPermission']"
         [formGroup]="createCommentForm"
         (ngSubmit)="createComment()"
         #formDirective="ngForm"
@@ -131,7 +140,11 @@
               style="padding: 10px"
             >
               <pre fxFlex="90" class="message">{{ comment.message }}</pre>
-              <div fxLayout="column" fxLayoutGap="16px">
+              <div
+                *ngIf="comment.commenter_id._id == _authService.user._id"
+                fxLayout="column"
+                fxLayoutGap="16px"
+              >
                 <button
                   (click)="
                     commentToEdit = comment._id;
@@ -268,29 +281,34 @@
         <mat-card-header>
           <mat-card-title>Attachments</mat-card-title>
         </mat-card-header>
-        <ngx-dropzone
-          accept="image/jpeg,image/jpg,image/png,image/gif"
-          (change)="onSelect($event)"
-        >
-          <ngx-dropzone-label>Upload images</ngx-dropzone-label>
-          <ngx-dropzone-image-preview
-            ngProjectAs="ngx-dropzone-preview"
-            *ngFor="let f of filesToUpload"
-            [file]="f"
-            [removable]="true"
-            (removed)="onRemove(f)"
+        <div *ngxPermissionsOnly="['Admin', 'canCommentAndUploadPermission']">
+          <ngx-dropzone
+            accept="image/jpeg,image/jpg,image/png,image/gif"
+            (change)="onSelect($event)"
           >
-            <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
-          </ngx-dropzone-image-preview>
-        </ngx-dropzone>
-        <button
-          mat-raised-button
-          color="accent"
-          style="margin-bottom: 16px; margin-top: 16px"
-          (click)="uploadImage()"
-        >
-          Upload Images
-        </button>
+            <ngx-dropzone-label>Upload images</ngx-dropzone-label>
+            <ngx-dropzone-image-preview
+              ngProjectAs="ngx-dropzone-preview"
+              *ngFor="let f of filesToUpload"
+              [file]="f"
+              [removable]="true"
+              (removed)="onRemove(f)"
+            >
+              <ngx-dropzone-label
+                >{{ f.name }} ({{ f.type }})</ngx-dropzone-label
+              >
+            </ngx-dropzone-image-preview>
+          </ngx-dropzone>
+          <button
+            mat-raised-button
+            color="accent"
+            style="margin-bottom: 16px; margin-top: 16px"
+            (click)="uploadImage()"
+          >
+            Upload Images
+          </button>
+        </div>
+
         <mat-divider *ngIf="attachmentInfoAndDataUrls.length"></mat-divider>
         <mat-card-content>
           <div fxLayout="column">
@@ -328,7 +346,12 @@
                     {{ attachment.attachmentInfo.fileName }}
                   </figcaption>
                 </div>
-                <div>
+                <div
+                  *ngIf="
+                    attachment.attachmentInfo.uploader_id._id ==
+                    _authService.user._id
+                  "
+                >
                   <button
                     mat-fab
                     color="warn"

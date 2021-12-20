@@ -1,11 +1,15 @@
 <h2 style="margin: 5px">All Projects</h2>
 <mat-divider></mat-divider>
-<button
-  [routerLink]="'create'"
-  style="margin-bottom: 16px; margin-top: 16px"
-  mat-raised-button
-  color="primary"
->
-  Create a new project
-</button>
+<div style="margin-bottom: 16px">
+  <button
+    *ngxPermissionsOnly="['Admin', 'Project manager']"
+    [routerLink]="'create'"
+    style="margin-top: 16px"
+    mat-raised-button
+    color="primary"
+  >
+    Create a new project
+  </button>
+</div>
+
 <app-project-list-table [projectData]="projectData"></app-project-list-table>

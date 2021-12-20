@@ -167,7 +167,9 @@
           ></tr>
           <tr
             mat-row
-            (click)="userAssign = row._id"
+            (click)="
+              userAssign != row._id ? (userAssign = row._id) : (userAssign = '')
+            "
             [class.demo-row-is-clicked]="userAssign == row._id"
             *matRowDef="let row; columns: displayedColumns"
           ></tr>

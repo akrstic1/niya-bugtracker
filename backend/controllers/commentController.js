@@ -63,6 +63,17 @@ const createComment = async (req, res) => {
     return res.status(404).json({ message: "Ticket not found!" });
   }
 
+  if (
+    !(
+      project.users.includes(req.user._id) ||
+      req.user.roles.some((x) => {
+        return x == "Admin";
+      })
+    )
+  ) {
+    return res.status(401).json({ message: "Access denied!" });
+  }
+
   if (!project.tickets.id(req.params.ticket_id)) {
     return res.status(404).json({ message: "Ticket not found!" });
   }

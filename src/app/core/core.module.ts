@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { NgxPermissionsModule } from 'ngx-permissions';
 import { JwtTokenInterceptor } from './interceptor/jwt-token.interceptor';
 import { AppInitializerService } from './service/app-initializer.service';
 import { AuthService } from './service/auth.service';
@@ -8,7 +9,7 @@ import { LocalStorageService } from './service/local-storage.service';
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule],
+  imports: [CommonModule, NgxPermissionsModule.forRoot()],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtTokenInterceptor, multi: true },
     {

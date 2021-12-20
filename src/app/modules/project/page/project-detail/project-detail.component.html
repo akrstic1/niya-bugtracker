@@ -4,7 +4,7 @@
     class="dashboard-card-content"
     fxLayoutAlign="space-evenly center"
   >
-    <div>
+    <div *ngxPermissionsOnly="['Admin', 'Project manager']">
       <button mat-mini-fab [routerLink]="['edit']" color="primary">
         <mat-icon>edit</mat-icon>
       </button>
@@ -47,6 +47,7 @@
       <mat-card-title> Tickets </mat-card-title>
       <mat-card-subtitle
         ><button
+          *ngxPermissionsOnly="['Admin', 'canCreateTicket']"
           [routerLink]="['/index/tickets/create/' + projectData._id]"
           style="margin-top: 5px"
           color="primary"

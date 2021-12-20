@@ -8,6 +8,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
+import { NgxPermissionsModule } from 'ngx-permissions';
 import { ConfirmationDialogComponent } from './components/other/confirmation-dialog/confirmation-dialog.component';
 import { ProjectListTableComponent } from './components/project/project-list-table/project-list-table.component';
 import { TicketListTableComponent } from './components/ticket/ticket-list-table/ticket-list-table.component';
@@ -30,11 +31,13 @@ import { UserListTableComponent } from './components/user/user-list-table/user-l
     RouterModule,
     MatIconModule,
     MatSnackBarModule,
+    NgxPermissionsModule,
   ],
   exports: [
     UserListTableComponent,
     TicketListTableComponent,
     ProjectListTableComponent,
+    NgxPermissionsModule,
   ],
 })
 export class SharedModule {}
