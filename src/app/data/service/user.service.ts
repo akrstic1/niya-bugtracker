@@ -32,4 +32,10 @@ export class UserService {
       environment.API_URL + '/user/' + userId + '/info'
     );
   }
+
+  updateUserRole(userId: string, roles: string[]) {
+    return this._httpClient.put<User>(environment.API_URL + '/user/' + userId, {
+      roles: roles,
+    });
+  }
 }

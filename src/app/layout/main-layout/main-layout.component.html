@@ -29,6 +29,12 @@
         [queryParams]="{ show: '2' }"
         >Assigned Tickets</a
       >
+      <a
+        mat-list-item
+        *ngxPermissionsOnly="['Admin']"
+        [routerLink]="['/index/admin/']"
+        >Manage Users</a
+      >
       <a mat-list-item (click)="logout()">Logout</a>
     </mat-nav-list>
     <mat-nav-list *ngIf="!currentUser.username">

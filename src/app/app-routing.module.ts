@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { NgxPermissionsGuard } from 'ngx-permissions';
 import { IsAuthenticatedGuard } from './core/guard/is-authenticated.guard';
 import { IsNotAuthenticatedGuard } from './core/guard/is-not-authenticated.guard';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
@@ -17,6 +18,7 @@ const routes: Routes = [
       },
     ],
   },
+
   {
     path: 'index',
     component: MainLayoutComponent,
@@ -43,6 +45,18 @@ const routes: Routes = [
         path: 'user',
         loadChildren: () =>
           import('./modules/user/user.module').then((m) => m.UserModule),
+      },
+      {
+        path: 'admin',
+        loadChildren: () =>
+          import('./modules/admin/admin.module').then((m) => m.AdminModule),
+        canActivate: [NgxPermissionsGuard],
+        data: {
+          permissions: {
+            only: ['Admin'],
+            redirectTo: '/index',
+          },
+        },
       },
     ],
   },
