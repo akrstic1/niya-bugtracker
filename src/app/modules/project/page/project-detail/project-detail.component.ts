@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { AuthService } from 'src/app/core/service/auth.service';
 import { Project } from 'src/app/data/model/project.model';
+import { TicketWithProjectName } from 'src/app/data/model/ticket-with-project-name';
 
 @Component({
   selector: 'app-project-detail',
@@ -13,6 +14,7 @@ import { Project } from 'src/app/data/model/project.model';
 export class ProjectDetailComponent {
   projectData: Project = new Project();
 
+  ticketsWithProjectName: TicketWithProjectName[] = [];
   canCreateTicket!: boolean;
 
   constructor(
@@ -24,6 +26,12 @@ export class ProjectDetailComponent {
 
   ngOnInit(): void {
     this.projectData = this.route.snapshot.data['projectDetailResponse'];
+
+    this.projectData.tickets.forEach((ticket) => {
+      this.ticketsWithProjectName.push(
+        new TicketWithProjectName(ticket, this.projectData.name)
+      );
+    });
 
     this.createTicketPermission();
   }

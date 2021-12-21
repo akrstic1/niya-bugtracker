@@ -2,7 +2,9 @@ import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
+import { TicketWithProjectName } from 'src/app/data/model/ticket-with-project-name';
 import { Ticket } from 'src/app/data/model/ticket.model';
+import { TicketService } from 'src/app/data/service/ticket.service';
 import { TicketListTableDataSource } from './ticket-list-table-datasource';
 
 @Component({
@@ -16,12 +18,13 @@ export class TicketListTableComponent implements AfterViewInit {
   @ViewChild(MatTable) table!: MatTable<Ticket>;
   dataSource: TicketListTableDataSource;
 
-  @Input() ticketData: Ticket[] = [];
+  @Input() ticketData: TicketWithProjectName[] = [];
 
   showClosedTickets: boolean = true;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = [
+    'projectName',
     'title',
     'status',
     'priority',
@@ -32,11 +35,11 @@ export class TicketListTableComponent implements AfterViewInit {
     'action',
   ];
 
-  constructor() {
+  constructor(private _ticketService: TicketService) {
     this.dataSource = new TicketListTableDataSource();
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     //Assign array sort for correct displaying of assigned user
     this.ticketData.map((ticket) => {
       ticket.assigns = ticket.assigns.sort((a, b) => {
@@ -55,6 +58,7 @@ export class TicketListTableComponent implements AfterViewInit {
       );
     });
 
+    //Pre-sort by status
     const statusSort = ['Closed/Inactivity', 'Resolved', 'Open'];
     this.ticketData.sort((a, b) => {
       return statusSort.indexOf(a.status) < statusSort.indexOf(b.status)
@@ -62,7 +66,6 @@ export class TicketListTableComponent implements AfterViewInit {
         : -1;
     });
 
-    //Put data into datasource for table
     this.dataSource.data = this.ticketData;
   }
 
@@ -70,6 +73,7 @@ export class TicketListTableComponent implements AfterViewInit {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;
+    this.table.dataSource = this.dataSource.connect();
   }
 
   public showTickets() {

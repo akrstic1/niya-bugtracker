@@ -3,15 +3,15 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Ticket } from 'src/app/data/model/ticket.model';
+import { TicketWithProjectName } from 'src/app/data/model/ticket-with-project-name';
 
 /**
  * Data source for the TicketListTable view. This class should
  * encapsulate all logic for fetching and manipulating the displayed data
  * (including sorting, pagination, and filtering).
  */
-export class TicketListTableDataSource extends DataSource<Ticket> {
-  data: Ticket[] = [];
+export class TicketListTableDataSource extends DataSource<TicketWithProjectName> {
+  data: TicketWithProjectName[] = [];
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;
 
@@ -24,7 +24,7 @@ export class TicketListTableDataSource extends DataSource<Ticket> {
    * the returned stream emits new items.
    * @returns A stream of the items to be rendered.
    */
-  connect(): Observable<Ticket[]> {
+  connect(): Observable<TicketWithProjectName[]> {
     if (this.paginator && this.sort) {
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
@@ -54,7 +54,7 @@ export class TicketListTableDataSource extends DataSource<Ticket> {
    * Paginate the data (client-side). If you're using server-side pagination,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getPagedData(data: Ticket[]): Ticket[] {
+  private getPagedData(data: TicketWithProjectName[]): TicketWithProjectName[] {
     if (this.paginator) {
       const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
       return data.splice(startIndex, this.paginator.pageSize);
@@ -67,7 +67,9 @@ export class TicketListTableDataSource extends DataSource<Ticket> {
    * Sort the data (client-side). If you're using server-side sorting,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getSortedData(data: Ticket[]): Ticket[] {
+  private getSortedData(
+    data: TicketWithProjectName[]
+  ): TicketWithProjectName[] {
     if (!this.sort || !this.sort.active || this.sort.direction === '') {
       return data;
     }
@@ -75,6 +77,8 @@ export class TicketListTableDataSource extends DataSource<Ticket> {
     return data.sort((a, b) => {
       const isAsc = this.sort?.direction === 'asc';
       switch (this.sort?.active) {
+        case 'projectName':
+          return compare(a.projectName, b.projectName, isAsc);
         case 'title':
           return compare(a.title, b.title, isAsc);
         case 'submitter_fullName':

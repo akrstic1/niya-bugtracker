@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Project } from 'src/app/data/model/project.model';
-import { Ticket } from 'src/app/data/model/ticket.model';
+import { TicketWithProjectName } from 'src/app/data/model/ticket-with-project-name';
 import { User } from 'src/app/data/model/user.model';
 
 @Component({
@@ -15,8 +15,8 @@ export class UserDetailComponent implements OnInit {
   userInfoResponse!: Project[];
 
   userInfoProjects: Project[] = [];
-  userInfoSubmittedTickets: Ticket[] = [];
-  userInfoAssignedTickets: Ticket[] = [];
+  userInfoSubmittedTickets: TicketWithProjectName[] = [];
+  userInfoAssignedTickets: TicketWithProjectName[] = [];
 
   showTable!: string | null;
 
@@ -39,27 +39,34 @@ export class UserDetailComponent implements OnInit {
         });
       })
     );
+
     this.userInfoResponse.forEach((project) => {
       //Submitted tickets
-      this.userInfoSubmittedTickets = this.userInfoSubmittedTickets.concat(
-        project.tickets.filter((ticket) => {
-          return ticket.submitter_id._id == this.currentUser._id;
-        })
-      );
+      let submittedTickets = project.tickets.filter((ticket) => {
+        return ticket.submitter_id._id == this.currentUser._id;
+      });
+      submittedTickets.forEach((submittedTicket) => {
+        this.userInfoSubmittedTickets.push(
+          new TicketWithProjectName(submittedTicket, project.name)
+        );
+      });
 
       //Assigned tickets
-      this.userInfoAssignedTickets = this.userInfoAssignedTickets.concat(
-        project.tickets.filter((ticket) => {
-          if (ticket.assigns.length != 0) {
-            return (
-              ticket.assigns[ticket.assigns.length - 1].assignedToUser_id._id ==
-              this.currentUser._id
-            );
-          } else {
-            return false;
-          }
-        })
-      );
+      let assignedTickets = project.tickets.filter((ticket) => {
+        if (ticket.assigns.length != 0) {
+          return (
+            ticket.assigns[ticket.assigns.length - 1].assignedToUser_id._id ==
+            this.currentUser._id
+          );
+        } else {
+          return false;
+        }
+      });
+      assignedTickets.forEach((assignedTicket) => {
+        this.userInfoAssignedTickets.push(
+          new TicketWithProjectName(assignedTicket, project.name)
+        );
+      });
     });
 
     //Access query parameters to display correct table first
