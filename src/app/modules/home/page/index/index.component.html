@@ -1,25 +1,41 @@
-<div
-  fxLayout="row wrap"
-  fxLayoutAlign="space-between stretch"
-  fxLayoutGap="16px"
->
-  <mat-card fxFlex="49%" fxFlex.lt-lg="100%">
-    <mat-card-header>
-      <mat-card-title> Ticket Status Chart </mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <app-ticket-status-pie [ticketsData]="ticketList"></app-ticket-status-pie>
-    </mat-card-content>
-  </mat-card>
+<div fxLayout="column" fxLayoutGap="16px">
+  <div
+    fxLayout="row wrap"
+    fxLayoutAlign="space-between stretch"
+    fxLayoutGap="16px"
+  >
+    <mat-card fxFlex="49%" fxFlex.lt-lg="100%">
+      <mat-card-header>
+        <mat-card-title> Ticket Status Chart </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <app-ticket-status-pie
+          [ticketsData]="ticketList"
+        ></app-ticket-status-pie>
+      </mat-card-content>
+    </mat-card>
 
-  <mat-card fxFlex="49%" fxFlex.lt-lg="100%">
-    <mat-card-header>
-      <mat-card-title> Ticket Priority Chart (Open Tickets) </mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <app-ticket-priority-bar
-        [ticketsData]="ticketList"
-      ></app-ticket-priority-bar>
-    </mat-card-content>
-  </mat-card>
+    <mat-card fxFlex="49%" fxFlex.lt-lg="100%">
+      <mat-card-header>
+        <mat-card-title> Ticket Priority Chart (Open Tickets) </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <app-ticket-priority-bar
+          [ticketsData]="ticketList"
+        ></app-ticket-priority-bar>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxLayout="row" fxLayoutGap="16px">
+    <mat-card fxFlex="100%">
+      <mat-card-header>
+        <mat-card-title> Ticket Creation (7 days) </mat-card-title>
+      </mat-card-header>
+      <mat-card-content style="height: 400px">
+        <app-ticket-creation-line
+          [ticketsData]="ticketList"
+        ></app-ticket-creation-line>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>

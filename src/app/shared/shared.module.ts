@@ -13,6 +13,7 @@ import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
 import { NgChartsModule } from 'ng2-charts';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { TicketCreationLineComponent } from './components/chart/ticket-creation-line/ticket-creation-line.component';
 import { TicketPriorityBarComponent } from './components/chart/ticket-priority-bar/ticket-priority-bar.component';
 import { TicketStatusPieComponent } from './components/chart/ticket-status-pie/ticket-status-pie.component';
 import { ConfirmationDialogComponent } from './components/other/confirmation-dialog/confirmation-dialog.component';
@@ -30,6 +31,7 @@ import { UserListTableComponent } from './components/user/user-list-table/user-l
     ProjectListTableComponent,
     TicketStatusPieComponent,
     TicketPriorityBarComponent,
+    TicketCreationLineComponent,
   ],
   imports: [
     CommonModule,
@@ -56,6 +58,7 @@ import { UserListTableComponent } from './components/user/user-list-table/user-l
     NgxPermissionsModule,
     TicketStatusPieComponent,
     TicketPriorityBarComponent,
+    TicketCreationLineComponent,
   ],
 })
 export class SharedModule {}
