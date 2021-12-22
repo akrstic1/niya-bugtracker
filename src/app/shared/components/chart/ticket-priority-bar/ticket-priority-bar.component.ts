@@ -25,7 +25,7 @@ export class TicketPriorityBarComponent implements OnInit {
     });
 
     this.barChartOptions = {
-      maintainAspectRatio: true,
+      maintainAspectRatio: false,
       responsive: true,
       scales: {
         x: {},
