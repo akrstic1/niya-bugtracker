@@ -11,7 +11,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
+import { NgChartsModule } from 'ng2-charts';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { TicketPriorityBarComponent } from './components/chart/ticket-priority-bar/ticket-priority-bar.component';
+import { TicketStatusPieComponent } from './components/chart/ticket-status-pie/ticket-status-pie.component';
 import { ConfirmationDialogComponent } from './components/other/confirmation-dialog/confirmation-dialog.component';
 import { ProjectListTableComponent } from './components/project/project-list-table/project-list-table.component';
 import { TicketListTableComponent } from './components/ticket/ticket-list-table/ticket-list-table.component';
@@ -25,6 +28,8 @@ import { UserListTableComponent } from './components/user/user-list-table/user-l
     TicketListTableComponent,
     ConfirmationDialogComponent,
     ProjectListTableComponent,
+    TicketStatusPieComponent,
+    TicketPriorityBarComponent,
   ],
   imports: [
     CommonModule,
@@ -41,6 +46,7 @@ import { UserListTableComponent } from './components/user/user-list-table/user-l
     MatSelectModule,
     ReactiveFormsModule,
     MatSnackBarModule,
+    NgChartsModule,
   ],
   exports: [
     UserListTableComponent,
@@ -48,6 +54,8 @@ import { UserListTableComponent } from './components/user/user-list-table/user-l
     TicketListTableComponent,
     ProjectListTableComponent,
     NgxPermissionsModule,
+    TicketStatusPieComponent,
+    TicketPriorityBarComponent,
   ],
 })
 export class SharedModule {}

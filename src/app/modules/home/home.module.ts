@@ -1,17 +1,19 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatCardModule } from '@angular/material/card';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { HomeRoutingModule } from './home-routing.module';
 import { IndexComponent } from './page/index/index.component';
 
-
 @NgModule({
-  declarations: [
-    IndexComponent
-  ],
+  declarations: [IndexComponent],
   imports: [
     CommonModule,
-    HomeRoutingModule
-  ]
+    FlexLayoutModule,
+    HomeRoutingModule,
+    SharedModule,
+    MatCardModule,
+  ],
 })
-export class HomeModule { }
+export class HomeModule {}

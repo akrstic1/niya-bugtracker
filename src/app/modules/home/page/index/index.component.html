@@ -1,1 +1,25 @@
-<p>index works!</p>
+<div
+  fxLayout="row wrap"
+  fxLayoutAlign="space-between stretch"
+  fxLayoutGap="16px"
+>
+  <mat-card fxFlex="49%" fxFlex.lt-lg="100%">
+    <mat-card-header>
+      <mat-card-title> Ticket Status Chart </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <app-ticket-status-pie [ticketsData]="ticketList"></app-ticket-status-pie>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card fxFlex="49%" fxFlex.lt-lg="100%">
+    <mat-card-header>
+      <mat-card-title> Ticket Priority Chart (Open Tickets) </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <app-ticket-priority-bar
+        [ticketsData]="ticketList"
+      ></app-ticket-priority-bar>
+    </mat-card-content>
+  </mat-card>
+</div>
