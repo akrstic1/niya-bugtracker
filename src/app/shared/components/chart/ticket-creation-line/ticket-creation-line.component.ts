@@ -27,44 +27,79 @@ export class TicketCreationLineComponent implements OnInit {
           data: [
             this.ticketsData.filter((ticket) => {
               return (
-                new Date(ticket.createdAt).getDate() ==
-                new Date(newDate.setDate(currentDate.getDate() - 6)).getDate()
+                new Date(ticket.createdAt).setHours(0, 0, 0, 0) ==
+                new Date(newDate.setDate(currentDate.getDate() - 6)).setHours(
+                  0,
+                  0,
+                  0,
+                  0
+                )
               );
             }).length,
             this.ticketsData.filter((ticket) => {
               return (
-                new Date(ticket.createdAt).getDate() ==
-                new Date(newDate.setDate(currentDate.getDate() - 5)).getDate()
+                new Date(ticket.createdAt).setHours(0, 0, 0, 0) ==
+                new Date(newDate.setDate(currentDate.getDate() - 5)).setHours(
+                  0,
+                  0,
+                  0,
+                  0
+                )
               );
             }).length,
             this.ticketsData.filter((ticket) => {
               return (
-                new Date(ticket.createdAt).getDate() ==
-                new Date(newDate.setDate(currentDate.getDate() - 4)).getDate()
+                new Date(ticket.createdAt).setHours(0, 0, 0, 0) ==
+                new Date(newDate.setDate(currentDate.getDate() - 4)).setHours(
+                  0,
+                  0,
+                  0,
+                  0
+                )
               );
             }).length,
             this.ticketsData.filter((ticket) => {
               return (
-                new Date(ticket.createdAt).getDate() ==
-                new Date(newDate.setDate(currentDate.getDate() - 3)).getDate()
+                new Date(ticket.createdAt).setHours(0, 0, 0, 0) ==
+                new Date(newDate.setDate(currentDate.getDate() - 3)).setHours(
+                  0,
+                  0,
+                  0,
+                  0
+                )
               );
             }).length,
             this.ticketsData.filter((ticket) => {
               return (
-                new Date(ticket.createdAt).getDate() ==
-                new Date(newDate.setDate(currentDate.getDate() - 2)).getDate()
+                new Date(ticket.createdAt).setHours(0, 0, 0, 0) ==
+                new Date(newDate.setDate(currentDate.getDate() - 2)).setHours(
+                  0,
+                  0,
+                  0,
+                  0
+                )
               );
             }).length,
             this.ticketsData.filter((ticket) => {
               return (
-                new Date(ticket.createdAt).getDate() ==
-                new Date(newDate.setDate(currentDate.getDate() - 1)).getDate()
+                new Date(ticket.createdAt).setHours(0, 0, 0, 0) ==
+                new Date(newDate.setDate(currentDate.getDate() - 1)).setHours(
+                  0,
+                  0,
+                  0,
+                  0
+                )
               );
             }).length,
             this.ticketsData.filter((ticket) => {
               return (
-                new Date(ticket.createdAt).getDate() ==
-                new Date(newDate.setDate(currentDate.getDate())).getDate()
+                new Date(ticket.createdAt).setHours(0, 0, 0, 0) ==
+                new Date(newDate.setDate(currentDate.getDate())).setHours(
+                  0,
+                  0,
+                  0,
+                  0
+                )
               );
             }).length,
           ],
