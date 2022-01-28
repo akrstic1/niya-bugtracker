@@ -38,4 +38,13 @@ export class UserService {
       roles: roles,
     });
   }
+
+  changePasswordUser(userId: string, newPassword: string) {
+    return this._httpClient.put<User>(
+      environment.API_URL + '/user/' + userId + '/changepassword',
+      {
+        password: newPassword,
+      }
+    );
+  }
 }

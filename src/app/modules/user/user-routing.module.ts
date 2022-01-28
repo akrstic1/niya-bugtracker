@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { UserDetailResolver } from 'src/app/core/resolver/user-detail.resolver';
 import { UserInfoResolver } from 'src/app/core/resolver/user-info.resolver';
 import { UserDetailComponent } from './page/user-detail/user-detail.component';
+import { UserEditComponent } from './page/user-edit/user-edit.component';
 
 const routes: Routes = [
   {
@@ -13,6 +14,14 @@ const routes: Routes = [
   {
     path: ':userId',
     component: UserDetailComponent,
+    resolve: {
+      userInfoResponse: UserInfoResolver,
+      userDetailResponse: UserDetailResolver,
+    },
+  },
+  {
+    path: ':userId/edit',
+    component: UserEditComponent,
     resolve: {
       userInfoResponse: UserInfoResolver,
       userDetailResponse: UserDetailResolver,
