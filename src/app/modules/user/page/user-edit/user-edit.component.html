@@ -1,0 +1,73 @@
+<div style="text-align: left">
+  <mat-card class="form-container">
+    <mat-card-title>{{ "Edit account information" }}</mat-card-title>
+    <div
+      fxLayout="row"
+      fxLayoutAlign="space-between stretch"
+      fxLayoutGap="16px"
+    >
+      <!--FORM-->
+      <form
+        [formGroup]="editUserForm"
+        (ngSubmit)="changePassword()"
+        class="edit-user-form"
+        fxFlex="40"
+      >
+        <h3>Account information</h3>
+        <mat-form-field appearance="outline" class="form-element">
+          <mat-label>Username</mat-label>
+          <input matInput value="{{ _authService.user.username }}" disabled />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-element">
+          <mat-label>Full Name</mat-label>
+          <input matInput value="{{ _authService.user.fullName }}" disabled />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-element">
+          <mat-label>New password</mat-label>
+          <input
+            matInput
+            type="password"
+            formControlName="password"
+            (input)="onPasswordInput()"
+          />
+          <mat-error *ngIf="password?.hasError('required')"
+            >Password is required</mat-error
+          >
+          <mat-error *ngIf="password?.hasError('minlength')"
+            >Password must have at least 6 characters</mat-error
+          >
+          <mat-error *ngIf="password?.hasError('maxlength')"
+            >Password can't have more then 20 characters</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-element">
+          <mat-label>Confirm new password</mat-label>
+          <input
+            matInput
+            type="password"
+            formControlName="password2"
+            (input)="onPasswordInput()"
+          />
+          <mat-error *ngIf="password2?.hasError('required')"
+            >Please confirm your password</mat-error
+          >
+          <mat-error
+            *ngIf="password2?.invalid && !password2?.hasError('required')"
+            >Passwords don't match</mat-error
+          >
+        </mat-form-field>
+        <div>
+          <button
+            type="submit"
+            mat-raised-button
+            color="primary"
+            style="margin-top: 5px"
+          >
+            Change Password
+          </button>
+        </div>
+      </form>
+    </div>
+  </mat-card>
+</div>

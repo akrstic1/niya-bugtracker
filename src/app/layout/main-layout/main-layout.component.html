@@ -35,7 +35,6 @@
         [routerLink]="['/index/admin/']"
         >Manage Users</a
       >
-      <a mat-list-item (click)="logout()">Logout</a>
     </mat-nav-list>
     <mat-nav-list *ngIf="!currentUser.username">
       <a mat-list-item [routerLink]="['/login']">Login</a>
@@ -53,14 +52,32 @@
       >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span
-        >Logged in as:
+      <span>
+        Logged in as:
         <span
-          style="color: black; cursor: pointer"
+          style="color: #e6c34c; cursor: pointer"
           [routerLink]="['/index/user/' + currentUser._id]"
           >{{ currentUser.username }}</span
         ></span
       >
+      <span class="spacer"></span>
+      <button mat-button [matMenuTriggerFor]="menu">
+        <span>User Actions</span>
+        <mat-icon>person</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button
+          [routerLink]="['/index/user/' + currentUser._id + '/edit']"
+          mat-menu-item
+        >
+          <mat-icon>manage_accounts</mat-icon>
+          <span>Change Password</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
     </mat-toolbar>
     <div class="router-container">
       <router-outlet></router-outlet>
