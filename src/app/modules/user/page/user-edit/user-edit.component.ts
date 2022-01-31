@@ -6,8 +6,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/core/service/auth.service';
+import { User } from 'src/app/data/model/user.model';
 import { UserService } from 'src/app/data/service/user.service';
 
 @Component({
@@ -17,16 +18,31 @@ import { UserService } from 'src/app/data/service/user.service';
 })
 export class UserEditComponent implements OnInit {
   editUserForm!: FormGroup;
+  userToEdit!: User;
 
   constructor(
     private formBuilder: FormBuilder,
     public _authService: AuthService,
     private _userService: UserService,
     private _snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
+    var id = this.route.snapshot.paramMap.get('userId');
+    this.userToEdit = this.route.snapshot.data['userDetailResponse'];
+
+    //redirect if not admin or user self edit
+    if (
+      this._authService.user._id != id &&
+      !this._authService.user.roles.some((x) => {
+        return x.name == 'Admin';
+      })
+    ) {
+      this.router.navigate(['/index']);
+    }
+
     this.editUserForm = this.formBuilder.group(
       {
         password: [

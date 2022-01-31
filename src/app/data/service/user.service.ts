@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Project } from '../model/project.model';
+import { EditUserRequest } from '../model/request/edit-user-request.model';
 import { RegisterUserRequest } from '../model/request/register-user-request.model';
 import { User } from '../model/user.model';
 
@@ -33,10 +34,11 @@ export class UserService {
     );
   }
 
-  updateUserRole(userId: string, roles: string[]) {
-    return this._httpClient.put<User>(environment.API_URL + '/user/' + userId, {
-      roles: roles,
-    });
+  editUser(userId: string, editUserRequest: EditUserRequest) {
+    return this._httpClient.put<User>(
+      environment.API_URL + '/user/' + userId,
+      editUserRequest
+    );
   }
 
   changePasswordUser(userId: string, newPassword: string) {
