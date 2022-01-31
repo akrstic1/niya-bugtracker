@@ -46,7 +46,7 @@ const changePassword = async (req, res) => {
     if (user == null) {
       return res.status(404).json({ message: "User not found!" });
     }
-    if (user._id != req.user._id) {
+    if (user._id != req.user._id && !req.user.roles.includes("Admin")) {
       return res.status(403).json({ message: "Access Denied!" });
     }
 

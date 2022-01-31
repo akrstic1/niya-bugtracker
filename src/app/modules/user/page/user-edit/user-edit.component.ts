@@ -19,6 +19,7 @@ import { UserService } from 'src/app/data/service/user.service';
 export class UserEditComponent implements OnInit {
   editUserForm!: FormGroup;
   userToEdit!: User;
+  userToEditId!: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -30,12 +31,12 @@ export class UserEditComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    var id = this.route.snapshot.paramMap.get('userId');
+    this.userToEditId = this.route.snapshot.paramMap.get('userId') as string;
     this.userToEdit = this.route.snapshot.data['userDetailResponse'];
 
     //redirect if not admin or user self edit
     if (
-      this._authService.user._id != id &&
+      this._authService.user._id != this.userToEditId &&
       !this._authService.user.roles.some((x) => {
         return x.name == 'Admin';
       })
@@ -78,7 +79,7 @@ export class UserEditComponent implements OnInit {
     if (this.editUserForm.valid) {
       var newPassword = this.editUserForm.get('password')!.value;
       this._userService
-        .changePasswordUser(this._authService.user._id, newPassword)
+        .changePasswordUser(this.userToEditId, newPassword)
         .subscribe({
           next: (res) => {
             this._snackBar.open(`Password successfully changed!`, 'Close', {
